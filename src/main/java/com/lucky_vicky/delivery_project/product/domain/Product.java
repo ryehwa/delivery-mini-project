@@ -1,4 +1,4 @@
-package com.lucky_vicky.delivery_project.product;
+package com.lucky_vicky.delivery_project.product.domain;
 
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import jakarta.persistence.*;

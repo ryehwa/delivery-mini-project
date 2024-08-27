@@ -1,6 +1,6 @@
 package com.lucky_vicky.delivery_project.product.dto;
 
-import com.lucky_vicky.delivery_project.product.Product;
+import com.lucky_vicky.delivery_project.product.domain.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

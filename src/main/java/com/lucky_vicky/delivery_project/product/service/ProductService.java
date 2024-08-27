@@ -1,9 +1,12 @@
-package com.lucky_vicky.delivery_project.product;
+package com.lucky_vicky.delivery_project.product.service;
 
 import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
 import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
+import com.lucky_vicky.delivery_project.global.util.CustomPageResponse;
+import com.lucky_vicky.delivery_project.product.domain.Product;
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import com.lucky_vicky.delivery_project.product.dto.ProductResponseDto;
+import com.lucky_vicky.delivery_project.product.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,14 +51,17 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public Page<ProductResponseDto> getProducts(int page, int size, String sort) {
+    public CustomPageResponse<ProductResponseDto> getProducts(int page, int size, String sort) {
         //오름차순, 내림차순
         //Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sortBy = Sort.by(sort);
+        // 내림차순 default로 정렬
+        Sort sortBy = Sort.by(Sort.Direction.DESC, sort);
+        //페이지 요청 생성
         Pageable pageable = PageRequest.of(page, size, sortBy);
-
+        //데이터 조회
         Page<Product> productList = productRepository.findAll(pageable);
-
-        return productList.map(ProductResponseDto:: new);
+        //Dto로 변환
+        Page<ProductResponseDto> dtoPage = productList.map(ProductResponseDto:: new);
+        return new CustomPageResponse<>(dtoPage);
     }
 }
