@@ -67,6 +67,12 @@ public class ProductController {
         CustomPageResponse<ProductResponseDto> products = productService.searchProducts(name, page-1, size, sort);
         return ResponseEntity.ok(products);
     }
+
     //상품 삭제 (store, admin)
+    @DeleteMapping("/{productId}")
+    public ResponseEntity deleteProduct(@PathVariable UUID productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.noContent().build();
+    }
 
 }

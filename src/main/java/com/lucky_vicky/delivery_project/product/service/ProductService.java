@@ -71,16 +71,6 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-
-
-    //상품 존재 여부 확인 메서드
-    public Product findProductById(UUID id){
-        return productRepository.findById(id).
-                orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUNT));
-    }
-
-
     public CustomPageResponse<ProductResponseDto> searchProducts(String name, int page, int size, String sort) {
         // 내림차순 default로 정렬
         Sort sortBy = Sort.by(Sort.Direction.DESC, sort);
@@ -91,5 +81,30 @@ public class ProductService {
         //dto로 변환
         Page<ProductResponseDto> searchProductsPage = searchProductList.map(ProductResponseDto ::new);
         return new CustomPageResponse<>(searchProductsPage);
+    }
+
+    //논리적 삭제 -> 숨김 처리
+    public void deleteProduct(UUID id) {
+        //권한 체크
+
+        //상품 검색
+        Product product = findProductById(id);
+        //hidden 처리
+        product.setHidden(true);
+        //db 저장
+        productRepository.save(product);
+    }
+
+
+    //상품 존재 여부 확인 메서드
+    public Product findProductById(UUID id){
+        Product product =  productRepository.findById(id).
+                orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUNT));
+        //상품 hidden 처리 여부 확인
+        if(product.isHidden()){
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_IS_HIDDEN);
+        }
+        return product;
     }
 }
