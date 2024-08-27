@@ -4,6 +4,7 @@ import com.lucky_vicky.delivery_project.global.util.CustomPageResponse;
 import com.lucky_vicky.delivery_project.product.service.ProductService;
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import com.lucky_vicky.delivery_project.product.dto.ProductResponseDto;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,11 @@ public class ProductController {
     }
 
     //상품 상세 조회 (public)
+    @GetMapping("/{productId}")
+    public ResponseEntity getProduct(@PathVariable UUID productId) {
+        ProductResponseDto productResponseDto = productService.getProduct(productId);
+        return ResponseEntity.ok(productResponseDto);
+    }
 
     //상품 검색 (public)
     //상품 삭제 (store, admin)

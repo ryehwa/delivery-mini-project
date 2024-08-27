@@ -42,9 +42,8 @@ public class ProductService {
         //권한 체크
 
         //상품 존재 여부 확인
-        Product product = productRepository.findById(id).
-                orElseThrow(() ->
-                    new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUNT));
+        Product product = findProductById(id);
+        //update
         product.update(productRequestDto);
         // db 저장
         productRepository.save(product);
@@ -64,4 +63,22 @@ public class ProductService {
         Page<ProductResponseDto> dtoPage = productList.map(ProductResponseDto:: new);
         return new CustomPageResponse<>(dtoPage);
     }
+
+    public ProductResponseDto getProduct(UUID productId) {
+        //상품 존재 여부 확인
+        Product product = findProductById(productId);
+        //dto로 반환
+        return new ProductResponseDto(product);
+    }
+
+
+
+    //상품 존재 여부 확인 메서드
+    public Product findProductById(UUID id){
+        return productRepository.findById(id).
+                orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUNT));
+    }
+
+
 }
