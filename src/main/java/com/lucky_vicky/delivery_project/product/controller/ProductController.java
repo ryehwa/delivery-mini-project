@@ -1,6 +1,7 @@
 package com.lucky_vicky.delivery_project.product.controller;
 
 import com.lucky_vicky.delivery_project.global.util.CustomPageResponse;
+import com.lucky_vicky.delivery_project.product.domain.Product;
 import com.lucky_vicky.delivery_project.product.service.ProductService;
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import com.lucky_vicky.delivery_project.product.dto.ProductResponseDto;
@@ -57,6 +58,15 @@ public class ProductController {
     }
 
     //상품 검색 (public)
+    @GetMapping("/search")
+    public ResponseEntity searchProducts(
+            @RequestParam("text") String name,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sort") String sort) {
+        CustomPageResponse<ProductResponseDto> products = productService.searchProducts(name, page-1, size, sort);
+        return ResponseEntity.ok(products);
+    }
     //상품 삭제 (store, admin)
 
 }

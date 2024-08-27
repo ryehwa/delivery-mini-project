@@ -81,4 +81,15 @@ public class ProductService {
     }
 
 
+    public CustomPageResponse<ProductResponseDto> searchProducts(String name, int page, int size, String sort) {
+        // 내림차순 default로 정렬
+        Sort sortBy = Sort.by(Sort.Direction.DESC, sort);
+        //페이지 요청 생성
+        Pageable pageable = PageRequest.of(page, size, sortBy);
+        //데이터 조회
+        Page<Product> searchProductList = productRepository.findByNameContainingIgnoreCase(pageable, name);
+        //dto로 변환
+        Page<ProductResponseDto> searchProductsPage = searchProductList.map(ProductResponseDto ::new);
+        return new CustomPageResponse<>(searchProductsPage);
+    }
 }
