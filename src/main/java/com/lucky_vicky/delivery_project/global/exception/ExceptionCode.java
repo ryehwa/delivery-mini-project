@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum ExceptionCode {
 
-    EXIST_PRODUCT(409, "존재하는 상품입니다."),
-    PRODUCT_NOT_FOUNT(409, "상품을 찾을 수 없습니다."),
-    PRODUCT_IS_HIDDEN(409, "숨김 처리된 상품입니다.");
+    EXIST_PRODUCT(403, "존재하는 상품입니다."),
+    PRODUCT_NOT_FOUNT(404, "상품을 찾을 수 없습니다."),
+    PRODUCT_IS_HIDDEN(403, "숨김 처리된 상품입니다.");
 
 
 
