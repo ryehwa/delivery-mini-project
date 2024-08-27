@@ -48,4 +48,11 @@ public class Product {
         this.isHidden = productRequestDto.isHidden();
     }
 
+    public void update(ProductRequestDto productRequestDto) {
+        this.name = productRequestDto.getName();
+        this.description = productRequestDto.getDescription();
+        this.price = productRequestDto.getPrice();
+        this.isHidden = productRequestDto.isHidden();
+
+    }
 }
