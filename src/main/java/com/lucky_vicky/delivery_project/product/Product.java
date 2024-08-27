@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.product;
 
+import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,20 @@ public class Product {
     @Column(nullable = false)
     private boolean isDeleted;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "store_id", nullable = false)
+//    private Store store;
 
     @PrePersist
     protected void createUUID(){
         if(id == null) id = UUID.randomUUID();
+    }
+
+    public Product(ProductRequestDto productRequestDto) {
+        this.name = productRequestDto.getName();
+        this.description = productRequestDto.getDescription();
+        this.price = productRequestDto.getPrice();
+        this.isHidden = productRequestDto.isHidden();
     }
 
 }
