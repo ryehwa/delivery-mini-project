@@ -43,6 +43,7 @@ public class Store extends AuditingEntity {
 
     /* -------------- Mapping -------------- */
     // order와 매핑 필요
+    // Store 권한을 가진 user와 매핑 필요
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoreCategoryMapper> storeCategoryMappers = new ArrayList<>();
 

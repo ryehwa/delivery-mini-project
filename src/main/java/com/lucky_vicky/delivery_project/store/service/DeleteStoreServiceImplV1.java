@@ -17,9 +17,14 @@ public class DeleteStoreServiceImplV1 implements DeleteStoreUseCase {
 
     @Override
     @Transactional
-    public void deleteStore(UUID storeId) {
+    public void deleteStoreByAdmin(UUID storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("가게가 존재하지 않습니다."));
         storeRepository.delete(store);
+    }
+
+    @Override
+    public void deleteStoreByOwner(UUID storeId) {
+
     }
 }
