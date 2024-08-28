@@ -37,9 +37,9 @@ public class StoreCategoryMapper {
 
     /* -------------- Constructor -------------- */
     @Builder
-    public StoreCategoryMapper(Store store, StoreCategory StoreCategory) {
+    public StoreCategoryMapper(Store store, StoreCategory storeCategory) {
         this.store = store;
-        this.storeCategory = StoreCategory;
+        this.storeCategory = storeCategory;
     }
 
     /* -------------- Methods -------------- */

@@ -82,9 +82,8 @@ public class StoreController {
     @DeleteMapping("")
     public ResponseEntity<?> deleteStoreByOwner(
             // 토큰 받기
-            @PathVariable UUID storeId
     ) {
-        deleteStoreUseCase.deleteStoreByOwner(storeId);
+        deleteStoreUseCase.deleteStoreByOwner();
         return ResponseEntity.noContent().build();
     }
 

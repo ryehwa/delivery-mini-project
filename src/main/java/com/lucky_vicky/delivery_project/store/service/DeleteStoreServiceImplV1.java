@@ -24,7 +24,7 @@ public class DeleteStoreServiceImplV1 implements DeleteStoreUseCase {
     }
 
     @Override
-    public void deleteStoreByOwner(UUID storeId) {
-
+    public void deleteStoreByOwner() {
+        // 토큰으로 가게 조회 후 삭제
     }
 }
