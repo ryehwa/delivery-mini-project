@@ -10,12 +10,15 @@ import java.util.UUID;
 public record StoreSummaryResponseDto(
         UUID storeId,
         String name,
-        List<UUID> categoryIds // 카테고리 ID 리스트
+        List<String> categories // 카테고리 이름
 ) {
     public static StoreSummaryResponseDto fromEntity(Store store) {
         return StoreSummaryResponseDto.builder()
                 .storeId(store.getId())
                 .name(store.getName())
+                .categories(store.getStoreCategoryMappers().stream()
+                        .map(storeCategoryMapper -> storeCategoryMapper.getStoreCategory().getName())
+                        .toList())
                 .build();
     }
 }
