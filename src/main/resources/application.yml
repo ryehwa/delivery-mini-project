@@ -1,17 +1,26 @@
-#spring:
-#  data:
-#    redis:
-#      host:
-#      port:
-#      username:
-#      password:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/<DB명>
-#    username: <PostgreSQL 계정명>
-#    password: <비밀번호>
-#    driver-class-name: org.postgresql.Driver
-#  jpa:
-#    show-sql: true
-#    database: postgresql
-#    hibernate:
-#      ddl-auto: create
+spring:
+  application:
+    name: delivery-service
+  profiles:
+    active: local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
