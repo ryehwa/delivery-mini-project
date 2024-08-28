@@ -22,7 +22,7 @@ public class StoreController {
     private final DeleteStoreUseCase deleteStoreUseCase;
 
     /**
-     * 가게 생성
+     * 가게 생성 요청
      * 카테고리 추가, 인증/인가 추가 해야함.
      * */
     @PostMapping("")
@@ -30,6 +30,15 @@ public class StoreController {
             @RequestBody CreateStoreRequestDto createStoreRequestDto
     ) {
         return ResponseEntity.ok(createStoreUseCase.createStore(createStoreRequestDto));
+    }
+
+    /**
+     * 가게 생성 수락
+     * 카테고리 추가, 인증/인가 추가 해야함.
+     * */
+    @PostMapping("/{storeId}/acceptance")
+    public ResponseEntity<?> acceptStore(@PathVariable UUID storeId) {
+        return ResponseEntity.ok(createStoreUseCase.acceptStore(storeId));
     }
 
     /**

@@ -21,7 +21,7 @@ public class UpdateStoreServiceImplV1 implements UpdateStoreUseCase {
     public StoreDetailResponseDto updateStore(UUID storeId, UpdateStoreRequestDto request) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("가게가 존재하지 않습니다."));
-        store.update(request.name(), request.address(), request.number());
+        store.updateStoreInfo(request.name(), request.address(), request.number());
         return StoreDetailResponseDto.fromEntity(store);
     }
 }

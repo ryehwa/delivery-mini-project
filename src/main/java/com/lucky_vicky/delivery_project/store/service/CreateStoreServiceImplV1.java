@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +28,14 @@ public class CreateStoreServiceImplV1 implements CreateStoreUseCase {
         storeRepository.save(newStore);
         StoreUUIDResponseDto responseDto = StoreUUIDResponseDto.fromEntity(newStore);
         return responseDto;
+    }
+
+    @Override
+    @Transactional
+    public StoreUUIDResponseDto acceptStore(UUID storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 가게입니다."));
+        store.updateStoreStatus();
+        return StoreUUIDResponseDto.fromEntity(store);
     }
 }

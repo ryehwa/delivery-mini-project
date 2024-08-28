@@ -38,6 +38,9 @@ public class Store extends AuditingEntity {
     @Column(name = "number", nullable = false)
     private String number;
 
+    @Column(name = "is_hidden", nullable = false)
+    private Boolean isHidden;   // true: 숨김, false: 보임
+
     /* -------------- Mapping -------------- */
     // order와 매핑 필요
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -49,12 +52,17 @@ public class Store extends AuditingEntity {
         this.name = name;
         this.address = address;
         this.number = number;
+        this.isHidden = true;
     }
 
     /* -------------- Methods -------------- */
-    public void update(String name, String address, String number) {
+    public void updateStoreInfo(String name, String address, String number) {
         this.name = name;
         this.address = address;
         this.number = number;
+    }
+
+    public void updateStoreStatus() {
+        this.isHidden = false;
     }
 }
