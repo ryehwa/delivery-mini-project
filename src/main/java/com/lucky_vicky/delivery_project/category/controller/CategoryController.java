@@ -55,9 +55,9 @@ public class CategoryController {
      * */
     @DeleteMapping("/store/{categoryId}")
     public ResponseEntity<?> deleteStoreCategory(
-            @PathVariable String categoryId
+            @PathVariable UUID categoryId
     ) {
-        deleteCategoryUseCase.deleteStoreCategory(UUID.fromString(categoryId));
+        deleteCategoryUseCase.deleteStoreCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
 
@@ -67,9 +67,9 @@ public class CategoryController {
      * */
     @DeleteMapping("/local/{categoryId}")
     public ResponseEntity<?> deleteLocalCategory(
-            @PathVariable String categoryId
+            @PathVariable UUID categoryId
     ) {
-        deleteCategoryUseCase.deleteLocalCategory(UUID.fromString(categoryId));
+        deleteCategoryUseCase.deleteLocalCategory(categoryId);
         return ResponseEntity.noContent().build();
     }
 

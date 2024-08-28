@@ -56,9 +56,9 @@ public class StoreController {
      * */
     @GetMapping("/{storeId}")
     public ResponseEntity<?> readStoreDetail(
-            @PathVariable String storeId
+            @PathVariable UUID storeId
     ) {
-        return ResponseEntity.ok(readStoreDetailUseCase.readStoreDetail(UUID.fromString(storeId)));
+        return ResponseEntity.ok(readStoreDetailUseCase.readStoreDetail(storeId));
     }
 
     /**
@@ -67,10 +67,10 @@ public class StoreController {
      * */
     @PutMapping("/{storeId}")
     public ResponseEntity<?> updateStore(
-            @PathVariable String storeId,
+            @PathVariable UUID storeId,
             @RequestBody UpdateStoreRequestDto updateStoreRequestDto
     ) {
-        return ResponseEntity.ok(updateStoreUseCase.updateStore(UUID.fromString(storeId), updateStoreRequestDto));
+        return ResponseEntity.ok(updateStoreUseCase.updateStore(storeId, updateStoreRequestDto));
     }
 
     /**
@@ -78,9 +78,9 @@ public class StoreController {
      * */
     @DeleteMapping("/{storeId}")
     public ResponseEntity<?> deleteStore(
-            @PathVariable String storeId
+            @PathVariable UUID storeId
     ) {
-        deleteStoreUseCase.deleteStore(UUID.fromString(storeId));
+        deleteStoreUseCase.deleteStore(storeId);
         return ResponseEntity.noContent().build();
     }
 
