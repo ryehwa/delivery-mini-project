@@ -24,11 +24,30 @@ public class StoreController {
     /**
      * 가게 목록 조회
      * PUBLIC
-     * 카테고리 추가, 인증/인가 추가 해야함.
+     * 인증/인가 추가 해야함.
      * */
     @GetMapping("")
-    public ResponseEntity<?> readStoreList() {
-        return ResponseEntity.ok(readStoreListUseCase.readStoreList());
+    public ResponseEntity<?> readStoreList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC") String orderBy
+    ) {
+        return ResponseEntity.ok(readStoreListUseCase.readStoreList(page, size, sortBy, orderBy));
+    }
+
+    /**
+     * 가게 검색
+     * PUBLIC
+     * 인증/인가 추가 해야함.
+     * */
+    @GetMapping("/search")
+    public ResponseEntity<?> searchStore(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "text") String text
+    ) {
+        return ResponseEntity.ok(readStoreListUseCase.searchStore(page, size, text));
     }
 
     /**

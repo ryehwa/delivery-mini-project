@@ -5,11 +5,12 @@ import com.lucky_vicky.delivery_project.store.dto.StoreSummaryResponseDto;
 import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import com.lucky_vicky.delivery_project.store.usecase.ReadStoreListUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,20 @@ public class ReadStoreListServiceImplV1 implements ReadStoreListUseCase {
     private final StoreRepository storeRepository;
 
     @Override
-    public List<StoreSummaryResponseDto> readStoreList() {
-        List<Store> storeList = storeRepository.findAll();
-        List<StoreSummaryResponseDto> storeSummaryResponseDtoList = storeList.stream()
-                .map(StoreSummaryResponseDto::fromEntity)
-                .toList();
-        return storeSummaryResponseDtoList;
+    public Page<StoreSummaryResponseDto> readStoreList(int page, int size, String sortBy, String orderBy) {
+
+        Sort.Direction direction = orderBy.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Store> storePage = storeRepository.findAllByIsHiddeFalse(pageable);
+
+        return storePage.map(StoreSummaryResponseDto::fromEntity);
+    }
+
+    @Override
+    public Page<StoreSummaryResponseDto> searchStore(int page, int size, String text) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Store> storePage = storeRepository.findByIsHiddenFalseAndNameContaining(text, pageable);
+        return storePage.map(StoreSummaryResponseDto::fromEntity);
     }
 }
