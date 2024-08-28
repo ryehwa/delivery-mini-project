@@ -5,6 +5,10 @@ import com.lucky_vicky.delivery_project.delivery.dto.DeliveryRequestDto;
 import com.lucky_vicky.delivery_project.delivery.dto.DeliveryResponseDto;
 import com.lucky_vicky.delivery_project.delivery.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +33,19 @@ public class DeliveryService {
         return new DeliveryResponseDto(delivery);
     }
 
-    // 배송지 존재 여부 확인 메서드
+    public Page<DeliveryResponseDto> getDeliveryList(int page, int size, String sort) {
+        Sort sortBy = Sort.by(Sort.Direction.DESC, sort);
+        Pageable pageable = PageRequest.of(page, size, sortBy);
+        //해당 회원의 배송지 목록 조회
+        // To do : user와 조인 후 추가 구현!!!
+        Page<Delivery> deliveryEntityList = deliveryRepository.findAll(pageable);
+        //entity -> Dto
+        Page<DeliveryResponseDto> deliveryDtoList = deliveryEntityList.map(DeliveryResponseDto :: new);
+        return deliveryDtoList;
+        }
+
+
+    // 배송지 중복 여부 확인 메서드
 //    public void isExistsDelivery(Long id, String address) {
 //        //회원id로 배송지 목록 찾기 List<>
 //        List<Delivery> deliveryList = deliveryRepository.findAllByUserId(id);
