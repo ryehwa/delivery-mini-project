@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.store.domain;
 
+import com.lucky_vicky.delivery_project.category.domain.StoreCategoryMapper;
 import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +40,8 @@ public class Store extends AuditingEntity {
 
     /* -------------- Mapping -------------- */
     // order와 매핑 필요
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StoreCategoryMapper> storeCategoryMappers = new ArrayList<>();
 
     /* -------------- Constructor -------------- */
     @Builder
