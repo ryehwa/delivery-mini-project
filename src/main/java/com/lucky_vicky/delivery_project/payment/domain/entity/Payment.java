@@ -35,9 +35,11 @@ public class Payment extends AuditingEntity {
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private PaymentStatusEnum status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_method", nullable = false)
     private PaymentMethodEnum paymentMethod;
 
