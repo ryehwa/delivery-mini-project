@@ -8,5 +8,6 @@ import java.util.UUID;
 
 @UseCase(value = "updateStoreUseCase")
 public interface UpdateStoreUseCase {
-    StoreDetailResponseDto updateStore(UUID storeId, UpdateStoreRequestDto updateStoreRequestDto);
+    StoreDetailResponseDto updateStoreByAdmin(UUID storeId, UpdateStoreRequestDto updateStoreRequestDto);
+    StoreDetailResponseDto updateStoreByOwner(UpdateStoreRequestDto updateStoreRequestDto);
 }

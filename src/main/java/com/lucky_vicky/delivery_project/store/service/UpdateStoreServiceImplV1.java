@@ -18,10 +18,20 @@ public class UpdateStoreServiceImplV1 implements UpdateStoreUseCase {
 
     @Override
     @Transactional
-    public StoreDetailResponseDto updateStore(UUID storeId, UpdateStoreRequestDto request) {
+    public StoreDetailResponseDto updateStoreByAdmin(UUID storeId, UpdateStoreRequestDto request) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new IllegalArgumentException("가게가 존재하지 않습니다."));
-        store.update(request.name(), request.address(), request.number());
+        store.updateStoreInfo(request.name(), request.address(), request.number());
         return StoreDetailResponseDto.fromEntity(store);
+    }
+
+    // 토큰 받기
+    @Override
+    public StoreDetailResponseDto updateStoreByOwner(UpdateStoreRequestDto request) {
+//        Store store = storeRepository.findById(storeId)
+//                .orElseThrow(() -> new IllegalArgumentException("가게가 존재하지 않습니다."));
+//        store.updateStoreInfo(request.name(), request.address(), request.number());
+//        return StoreDetailResponseDto.fromEntity(store);
+        return null;
     }
 }

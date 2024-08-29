@@ -6,5 +6,6 @@ import java.util.UUID;
 
 @UseCase(value = "deleteStoreUseCase")
 public interface DeleteStoreUseCase {
-    void deleteStore(UUID storeId);
+    void deleteStoreByAdmin(UUID storeId);
+    void deleteStoreByOwner();
 }

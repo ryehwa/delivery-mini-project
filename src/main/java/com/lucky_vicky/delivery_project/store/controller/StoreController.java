@@ -22,7 +22,74 @@ public class StoreController {
     private final DeleteStoreUseCase deleteStoreUseCase;
 
     /**
-     * 가게 생성
+     * 가게 목록 조회
+     * PUBLIC
+     * 인증/인가 추가 해야함.
+     * */
+    @GetMapping("")
+    public ResponseEntity<?> readStoreList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC") String orderBy
+    ) {
+        return ResponseEntity.ok(readStoreListUseCase.readStoreList(page, size, sortBy, orderBy));
+    }
+
+    /**
+     * 가게 검색
+     * PUBLIC
+     * 인증/인가 추가 해야함.
+     * */
+    @GetMapping("/search")
+    public ResponseEntity<?> searchStore(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "text") String text
+    ) {
+        return ResponseEntity.ok(readStoreListUseCase.searchStore(page, size, text));
+    }
+
+    /**
+     * 가게 상세 조회
+     * PUBLIC
+     * 카테고리 추가, 인증/인가 추가 해야함.
+     * */
+    @GetMapping("/{storeId}")
+    public ResponseEntity<?> readStoreDetail(
+            @PathVariable UUID storeId
+    ) {
+        return ResponseEntity.ok(readStoreDetailUseCase.readStoreDetail(storeId));
+    }
+
+    /**
+     * 가게 정보 변경
+     * STORE
+     * 카테고리 추가, 인증/인가 추가 해야함.
+     * */
+    @PutMapping("")
+    public ResponseEntity<?> updateStoreByOwner(
+            // 토큰 받기
+            @RequestBody UpdateStoreRequestDto updateStoreRequestDto
+    ) {
+        return ResponseEntity.ok(updateStoreUseCase.updateStoreByOwner(updateStoreRequestDto));
+    }
+
+    /**
+     * 가게 삭제
+     * STORE
+     * */
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteStoreByOwner(
+            // 토큰 받기
+    ) {
+        deleteStoreUseCase.deleteStoreByOwner();
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 가게 생성 요청
+     * ADMIN, STORE
      * 카테고리 추가, 인증/인가 추가 해야함.
      * */
     @PostMapping("")
@@ -33,45 +100,37 @@ public class StoreController {
     }
 
     /**
-     * 가게 목록 조회
+     * 가게 생성 수락
+     * ADMIN
      * 카테고리 추가, 인증/인가 추가 해야함.
      * */
-    @GetMapping("")
-    public ResponseEntity<?> readStoreList() {
-        return ResponseEntity.ok(readStoreListUseCase.readStoreList());
-    }
-
-    /**
-     * 가게 상세 조회
-     * 카테고리 추가, 인증/인가 추가 해야함.
-     * */
-    @GetMapping("/{storeId}")
-    public ResponseEntity<?> readStoreDetail(
-            @PathVariable String storeId
-    ) {
-        return ResponseEntity.ok(readStoreDetailUseCase.readStoreDetail(UUID.fromString(storeId)));
+    @PostMapping("/{storeId}/acceptance")
+    public ResponseEntity<?> acceptStore(@PathVariable UUID storeId) {
+        return ResponseEntity.ok(createStoreUseCase.acceptStore(storeId));
     }
 
     /**
      * 가게 정보 변경
+     * ADMIN
      * 카테고리 추가, 인증/인가 추가 해야함.
      * */
     @PutMapping("/{storeId}")
-    public ResponseEntity<?> updateStore(
-            @PathVariable String storeId,
+    public ResponseEntity<?> updateStoreByAdmin(
+            @PathVariable UUID storeId,
             @RequestBody UpdateStoreRequestDto updateStoreRequestDto
     ) {
-        return ResponseEntity.ok(updateStoreUseCase.updateStore(UUID.fromString(storeId), updateStoreRequestDto));
+        return ResponseEntity.ok(updateStoreUseCase.updateStoreByAdmin(storeId, updateStoreRequestDto));
     }
 
     /**
      * 가게 삭제
+     * ADMIN
      * */
     @DeleteMapping("/{storeId}")
-    public ResponseEntity<?> deleteStore(
-            @PathVariable String storeId
+    public ResponseEntity<?> deleteStoreByAdmin(
+            @PathVariable UUID storeId
     ) {
-        deleteStoreUseCase.deleteStore(UUID.fromString(storeId));
+        deleteStoreUseCase.deleteStoreByAdmin(storeId);
         return ResponseEntity.noContent().build();
     }
 
