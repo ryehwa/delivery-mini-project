@@ -41,4 +41,11 @@ public class DeliveryController {
         DeliveryResponseDto deliveryResponseDto = deliveryService.updateDelivery(deliveryId, deliveryRequestDto);
         return ResponseEntity.ok(deliveryResponseDto);
     }
+
+    // 배송지 삭제
+    @DeleteMapping("/{deliveryId}")
+    public ResponseEntity deleteDelivery(@PathVariable("deliveryId") UUID deliveryId){
+        deliveryService.deleteDelivery(deliveryId);
+        return ResponseEntity.noContent().build();
+    }
 }

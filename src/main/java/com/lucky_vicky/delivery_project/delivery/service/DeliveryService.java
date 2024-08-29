@@ -22,12 +22,12 @@ public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
 
     public DeliveryResponseDto createAddress(DeliveryRequestDto deliveryRequestDto) {
-        //권한 체크
+        //To do : 권한 체크
 
         //entity로 변환
         Delivery delivery = new Delivery(deliveryRequestDto);
-        //이미 존재하는지 확인
-        //isExistsDelivery(delivery.getAddress());
+        //To do : 이미 존재하는지 확인
+        //isExistsDeliveryInList(delivery.getAddress());
         //해당 회원이 가진 배송지가 아무것도 없다면 isDefault처리
         delivery.setDefault(true);
         //db 저장
@@ -47,13 +47,12 @@ public class DeliveryService {
         }
 
     public DeliveryResponseDto updateDelivery(UUID deliveryId, DeliveryRequestDto deliveryRequestDto) {
-        // 권한 체크
+        // To do : 권한 체크
 
         // 배송지 존재 여부 확인
-        Delivery delivery = deliveryRepository.findById(deliveryId)
-                .orElseThrow(() -> new NullPointerException("존재하지 않는 배송지입니다."));
-        // 회원의 배송지 목록 중 중복 배송지 존재하는지 확인
-        //isExistsDelivery(delivery.getUserId(), deliveryRequestDto.getAddress());
+        Delivery delivery = isExistsDelivery(deliveryId);
+        // To do : 회원의 배송지 목록 중 중복 배송지 존재하는지 확인
+        //isExistsDeliveryInList(delivery.getUserId(), deliveryRequestDto.getAddress());
         // update
         delivery.update(deliveryRequestDto);
         // db 저장
@@ -62,9 +61,30 @@ public class DeliveryService {
         return new DeliveryResponseDto(delivery);
     }
 
+    public void deleteDelivery(UUID deliveryId) {
+        // To do : 권한 체크
+
+        // 배송지 존재 여부 확인
+        Delivery delivery = isExistsDelivery(deliveryId);
+        // Tp do : 해당 회원의 배송지인지 확인, 파라미터에 userId 필요
+//        if(delivery.getUserId.equals(권한체크한 userId))
+//            throw new IllegalArgumentException("해당 회원의 배송지가 아닙니다.");
+        // 논리적 삭제 -> IsDeleted 처리
+        if(!delivery.isDeleted()) delivery.setDeleted(true);
+        else throw new IllegalArgumentException("이미 삭제 처리된 배송지입니다.");
+        // db 저장
+        deliveryRepository.save(delivery);
+    }
+
+    //배송지 존재 여부 확인
+    public Delivery isExistsDelivery(UUID deliveryId) {
+        return deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 배송지입니다."));
+    }
+
 
     // 배송지 중복 여부 확인 메서드
-//    public void isExistsDelivery(Long id, String address) {
+//    public void isExistsDeliveryInList(Long id, String address) {
 //        //회원id로 배송지 목록 찾기 List<>
 //        List<Delivery> deliveryList = deliveryRepository.findAllByUserId(id);
 //        //해당 List에서 address 중복되는 게 있는지 확인
