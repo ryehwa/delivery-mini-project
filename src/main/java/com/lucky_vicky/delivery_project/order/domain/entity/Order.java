@@ -1,9 +1,11 @@
 package com.lucky_vicky.delivery_project.order.domain.entity;
 
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
+import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +16,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "p_order")
-public class Order {
+public class Order extends AuditingEntity {
 
     @Id
     @Column(name = "id")

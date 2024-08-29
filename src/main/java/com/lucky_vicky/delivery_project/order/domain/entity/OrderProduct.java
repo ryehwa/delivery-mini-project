@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.order.domain.entity;
 
+import com.lucky_vicky.delivery_project.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class OrderProduct {
 
     @Id
-    @Column(name = "order_product_id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
