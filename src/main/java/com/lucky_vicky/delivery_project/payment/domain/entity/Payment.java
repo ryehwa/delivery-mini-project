@@ -1,5 +1,9 @@
 package com.lucky_vicky.delivery_project.payment.domain.entity;
 
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
+import com.lucky_vicky.delivery_project.order.domain.entity.Order;
+import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentMethodEnum;
+import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Payment {
+public class Payment extends AuditingEntity {
 
     @Id
     @Column(name = "id", nullable = false)
