@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.order.domain.entity;
 
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Data
-public class OrderProduct {
+public class OrderProduct extends AuditingEntity {
 
     @Id
     @Column(name = "id")
@@ -31,9 +32,6 @@ public class OrderProduct {
 
     @Column(name="amount", nullable = false)
     private int amount;
-
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
 
     @PrePersist
     protected void createUUID(){

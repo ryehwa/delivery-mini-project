@@ -46,9 +46,6 @@ public class Order extends AuditingEntity {
     @Column(name = "is_online", nullable = false)
     private boolean isOnline;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
-
     @PrePersist
     protected void createUUID(){
         if(id == null) id = UUID.randomUUID();
