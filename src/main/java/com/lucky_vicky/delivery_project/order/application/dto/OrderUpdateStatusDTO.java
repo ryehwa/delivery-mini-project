@@ -20,7 +20,7 @@ public class OrderUpdateStatusDTO {
 
     public static OrderUpdateStatusDTO toStatusDTO(Order order){
         return OrderUpdateStatusDTO.builder()
-                .orderId(order.getOrderId())
+                .orderId(order.getId())
                 .status(order.getStatus())
                 .build();
     }

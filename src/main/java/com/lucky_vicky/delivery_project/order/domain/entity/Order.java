@@ -26,9 +26,9 @@ public class Order extends AuditingEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();

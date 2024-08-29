@@ -34,10 +34,10 @@ public class OrderResponseDTO {
                                 .price(op.getProduct().getPrice())
                                 .amount(op.getAmount())
                                 .build()).toList())
-                .address(order.getOrderDeliveryList().stream()
-                        .findFirst()
-                        .map(od -> od.getDelivery().getAddress())
-                        .orElse(null))  // 기본값으로 null 설정
+//                .address(order.getOrderDeliveryList().stream()
+//                        .findFirst()
+//                        .map(od -> od.getDelivery().getAddress())
+//                        .orElse(null))  // 기본값으로 null 설정
                 .totalPrice(order.getTotalPrice())
                 .status(order.getStatus())
                 .isOnline(order.isOnline())

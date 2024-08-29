@@ -33,40 +33,40 @@ import java.util.UUID;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
-    private final DeliveryRepository deliveryRepository;
+    //private final DeliveryRepository deliveryRepository;
 
     private static final long CANCEL_MINUTE = 5;
 
 
-    /**
-     * userId에 맞는 주문 목록 보기
-     *
-     * @param userId
-     * @param page
-     * @param size
-     * @param sortBy
-     * @return
-     */
-    @Override
-    public Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean orderBy) {
-
-        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
-        if(size != 10 && size != 30 && size != 50){
-            size = 10;
-        }
-
-        // 정렬 방향
-        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-
-        Page<Order> orderpage = orderRepository.findAllByUserId(userId, pageable);
-
-        return orderpage.map(OrderListDTO::toListDTO);
-    }
+//    /**
+//     * userId에 맞는 주문 목록 보기
+//     *
+//     * @param userId
+//     * @param page
+//     * @param size
+//     * @param sortBy
+//     * @return
+//     */
+//    @Override
+//    public Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean orderBy) {
+//
+//        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
+//        if(size != 10 && size != 30 && size != 50){
+//            size = 10;
+//        }
+//
+//        // 정렬 방향
+//        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
+//
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+//
+//        Page<Order> orderpage = orderRepository.findAllByUserId(userId, pageable);
+//
+//        return orderpage.map(OrderListDTO::toListDTO);
+//    }
 
     /**
      * 주문 생성
@@ -79,20 +79,19 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
 
         // DB에서 user, store 조회
-        User user = userRepository.findById(orderRequestDTO.getUserId()).orElseThrow(
-                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+//        User user = userRepository.findById(orderRequestDTO.getUserId()).orElseThrow(
+//                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         Store store = storeRepository.findById(orderRequestDTO.getStoreId()).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         // order 객체 생성
         Order order = Order.builder()
-                .user(user)
+                //.user(user)
                 .store(store)
                 .totalPrice(orderRequestDTO.getTotalPrice())
                 .isOnline(orderRequestDTO.isOnline())
                 .status(OrderStatusEnum.PENDING)
-                .isDeleted(false)
                 .build();
 
         // OrderProduct 리스트 생성
@@ -104,32 +103,31 @@ public class OrderServiceImpl implements OrderService {
                     .order(order)
                     .product(product)
                     .amount(dto.getAmount())
-                    .isDeleted(false)
                     .build();
         }).toList();
 
         // order에 orderProductList 주입
         order.setOrderProductList(orderProductList);
 
-        // Delivery 객체 생성
-        Delivery delivery = Delivery.builder()
-                .user(user)
-                .address(orderRequestDTO.getAddress())
-                .receipientName(orderRequestDTO.getRecipientName())
-                .isDefault(orderRequestDTO.isDefault())
-                .build();
-
-        delivery = deliveryRepository.save(delivery);
-
-        // OrderDelivery 리스트 생성
-        OrderDelivery orderDelivery = OrderDelivery.builder()
-                .order(order)
-                .delivery(delivery)
-                .isDeleted(false)
-                .build();
-
-        // order에 orderDelivery 주입
-        order.getOrderDeliveryList().add(orderDelivery);
+//        // Delivery 객체 생성
+//        Delivery delivery = Delivery.builder()
+//                .user(user)
+//                .address(orderRequestDTO.getAddress())
+//                .receipientName(orderRequestDTO.getRecipientName())
+//                .isDefault(orderRequestDTO.isDefault())
+//                .build();
+//
+//        delivery = deliveryRepository.save(delivery);
+//
+//        // OrderDelivery 리스트 생성
+//        OrderDelivery orderDelivery = OrderDelivery.builder()
+//                .order(order)
+//                .delivery(delivery)
+//                .isDeleted(false)
+//                .build();
+//
+//        // order에 orderDelivery 주입
+//        order.getOrderDeliveryList().add(orderDelivery);
 
         orderRepository.save(order);
 

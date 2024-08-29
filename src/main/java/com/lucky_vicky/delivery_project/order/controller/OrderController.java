@@ -21,31 +21,32 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // GET OrderList
-    @GetMapping("")
-    public Page<OrderListDTO> getOrderList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
-            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        log.info("OrderController : GET getOrderList");
-
-        Long userId = userDetails.getUser().getUserId();
-
-        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
-
-    }
+//    // GET OrderList
+//    @GetMapping("")
+//    public Page<OrderListDTO> getOrderList(
+//            @RequestParam(value = "page", defaultValue = "1") int page,
+//            @RequestParam(value = "size", defaultValue = "10") int size,
+//            @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
+//            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//
+//        log.info("OrderController : GET getOrderList");
+//
+//        Long userId = userDetails.getUser().getUserId();
+//
+//        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
+//
+//    }
 
     // Create Order
     @PostMapping("")
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO//, @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
 
         log.info("OrderController : POST createOrder");
 
-        Long userId = userDetails.getUser().getUserId();
-        orderRequestDTO.setUserId(userId);
+//        Long userId = userDetails.getUser().getUserId();
+//        orderRequestDTO.setUserId(userId);
 
         OrderResponseDTO dto = orderService.createOrder(orderRequestDTO);
 

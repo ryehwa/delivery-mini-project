@@ -25,9 +25,9 @@ public class OrderDelivery extends AuditingEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne
-    @JoinColumn(name = "delivery_id", nullable = false)
-    private Delivery delivery;
+//    @ManyToOne
+//    @JoinColumn(name = "delivery_id", nullable = false)
+//    private Delivery delivery;
 
     @PrePersist
     protected void createUUID(){
