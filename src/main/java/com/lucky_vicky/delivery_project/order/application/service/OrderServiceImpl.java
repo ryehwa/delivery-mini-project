@@ -1,5 +1,7 @@
 package com.lucky_vicky.delivery_project.order.application.service;
 
+import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
+import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderListDTO;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderRequestDTO;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderResponseDTO;
@@ -7,8 +9,12 @@ import com.lucky_vicky.delivery_project.order.application.dto.OrderUpdateStatusD
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.order.domain.entity.OrderDelivery;
 import com.lucky_vicky.delivery_project.order.domain.entity.OrderProduct;
-import com.lucky_vicky.delivery_project.order.domain.entity.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
 import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
+import com.lucky_vicky.delivery_project.product.domain.Product;
+import com.lucky_vicky.delivery_project.product.repository.ProductRepository;
+import com.lucky_vicky.delivery_project.store.domain.Store;
+import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,10 +51,15 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
-    public Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean desc) {
+    public Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean orderBy) {
+
+        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
+        if(size != 10 && size != 30 && size != 50){
+            size = 10;
+        }
 
         // 정렬 방향
-        Sort.Direction direction = desc ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
@@ -69,10 +80,10 @@ public class OrderServiceImpl implements OrderService {
 
         // DB에서 user, store 조회
         User user = userRepository.findById(orderRequestDTO.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         Store store = storeRepository.findById(orderRequestDTO.getStoreId()).orElseThrow(
-                () -> new IllegalArgumentException("유효하지 않은 가게입니다."));
+                () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         // order 객체 생성
         Order order = Order.builder()
@@ -87,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         // OrderProduct 리스트 생성
         List<OrderProduct> orderProductList = orderRequestDTO.getOrderProductList().stream().map(dto -> {
             Product product = productRepository.findById(dto.getProductId()).orElseThrow(
-                    () -> new IllegalArgumentException("유효하지 않은 상품입니다."));
+                    () -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUNT));
 
             return OrderProduct.builder()
                     .order(order)
@@ -135,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO findOrderById(UUID orderId) {
 
         Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new IllegalArgumentException("유효하지 않은 주문입니다."));
+                () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUNT));
 
         return OrderResponseDTO.toResponseDTO(order);
     }
@@ -151,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderUpdateStatusDTO updateOrderStatus(OrderUpdateStatusDTO orderUpdateStatusDTO) {
 
         Order order = orderRepository.findById(orderUpdateStatusDTO.getOrderId()).orElseThrow(
-                () -> new IllegalArgumentException("유효하지 않은 주문입니다."));
+                () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUNT));
 
         order.setStatus(orderUpdateStatusDTO.getStatus());
 
@@ -169,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
     public void cancelOrder(UUID orderId) {
 
         Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new IllegalArgumentException("유효하지 않은 주문입니다."));
+                () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUNT));
 
         // 현재 시간
         LocalDateTime now = LocalDateTime.now();
@@ -180,7 +191,7 @@ public class OrderServiceImpl implements OrderService {
         Duration duration = Duration.between(createdAt, now);
 
         if (duration.toMinutes() > CANCEL_MINUTE) {
-            throw new IllegalArgumentException("주문 취소는 주문 후 5분 이내에만 가능합니다.");
+            throw new BusinessLogicException(ExceptionCode.ORDER_CANCEL_TIME_EXCEEDED);
         }
 
         order.setStatus(OrderStatusEnum.CANCELLED);
