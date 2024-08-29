@@ -1,7 +1,7 @@
 package com.lucky_vicky.delivery_project.payment.application.dto;
 
-import com.lucky_vicky.delivery_project.payment.domain.entity.PaymentMethodEnum;
-import com.lucky_vicky.delivery_project.payment.domain.entity.PaymentStatusEnum;
+import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentMethodEnum;
+import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
