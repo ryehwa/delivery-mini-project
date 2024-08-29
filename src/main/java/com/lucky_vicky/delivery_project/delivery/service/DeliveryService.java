@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,22 @@ public class DeliveryService {
         Page<DeliveryResponseDto> deliveryDtoList = deliveryEntityList.map(DeliveryResponseDto :: new);
         return deliveryDtoList;
         }
+
+    public DeliveryResponseDto updateDelivery(UUID deliveryId, DeliveryRequestDto deliveryRequestDto) {
+        // 권한 체크
+
+        // 배송지 존재 여부 확인
+        Delivery delivery = deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new NullPointerException("존재하지 않는 배송지입니다."));
+        // 회원의 배송지 목록 중 중복 배송지 존재하는지 확인
+        //isExistsDelivery(delivery.getUserId(), deliveryRequestDto.getAddress());
+        // update
+        delivery.update(deliveryRequestDto);
+        // db 저장
+        deliveryRepository.save(delivery);
+        // entity -> dto
+        return new DeliveryResponseDto(delivery);
+    }
 
 
     // 배송지 중복 여부 확인 메서드

@@ -39,4 +39,9 @@ public class Delivery {
     }
 
 
+    public void update(DeliveryRequestDto deliveryRequestDto) {
+        this.address = deliveryRequestDto.getAddress();
+        this.recipientName = deliveryRequestDto.getRecipientName();
+        this.isDefault = deliveryRequestDto.isDefault();
+    }
 }

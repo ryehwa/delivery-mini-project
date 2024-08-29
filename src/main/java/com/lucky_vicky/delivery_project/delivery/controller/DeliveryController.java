@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
@@ -29,5 +31,14 @@ public class DeliveryController {
             @RequestParam("sort") String sort) {
         Page<DeliveryResponseDto> deliveryList = deliveryService.getDeliveryList(page-1, size, sort);
         return ResponseEntity.ok(deliveryList);
+    }
+
+    // 배송지 수정
+    @PutMapping("/{deliveryId}")
+    public ResponseEntity updateDelivery(
+            @PathVariable("deliveryId") UUID deliveryId,
+            @RequestBody DeliveryRequestDto deliveryRequestDto){
+        DeliveryResponseDto deliveryResponseDto = deliveryService.updateDelivery(deliveryId, deliveryRequestDto);
+        return ResponseEntity.ok(deliveryResponseDto);
     }
 }
