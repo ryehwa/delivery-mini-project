@@ -1,8 +1,7 @@
 package com.lucky_vicky.delivery_project.order.application.dto;
 
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
-import com.lucky_vicky.delivery_project.order.domain.entity.OrderProduct;
-import com.lucky_vicky.delivery_project.order.domain.entity.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,10 +27,10 @@ public class OrderResponseDTO {
 
     public static OrderResponseDTO toResponseDTO(Order order) {
         return OrderResponseDTO.builder()
-                .orderId(order.getOrderId())
+                .orderId(order.getId())
                 .orderProductDTOList(order.getOrderProductList().stream().map(
                         op -> OrderProductDTO.builder()
-                                .productId(op.getProduct().getProductId())
+                                .productId(op.getProduct().getId())
                                 .price(op.getProduct().getPrice())
                                 .amount(op.getAmount())
                                 .build()).toList())
