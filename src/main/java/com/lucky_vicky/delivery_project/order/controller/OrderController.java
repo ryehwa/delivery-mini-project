@@ -16,13 +16,13 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Log4j2(topic = "Order Controller")
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
     // GET OrderList
-    @GetMapping("/orders")
+    @GetMapping("")
     public Page<OrderListDTO> getOrderList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -32,8 +32,6 @@ public class OrderController {
 
         log.info("OrderController : GET getOrderList");
 
-
-
         Long userId = userDetails.getUser().getUserId();
 
         return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
@@ -41,7 +39,7 @@ public class OrderController {
     }
 
     // Create Order
-    @PostMapping("/orders")
+    @PostMapping("")
     public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         log.info("OrderController : POST createOrder");
@@ -55,7 +53,7 @@ public class OrderController {
     }
 
     // FindByOrderId
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDTO> findByOrderId(@PathVariable UUID orderId) {
 
         log.info("OrderController : GET findByOrderId");
@@ -67,7 +65,7 @@ public class OrderController {
     }
 
     // Update Order Status
-    @PutMapping("/orders/{orderId}")
+    @PutMapping("/{orderId}")
     public ResponseEntity<OrderUpdateStatusDTO> updateOrderStatus(@PathVariable UUID orderId, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO) {
 
         log.info("OrderController : PUT updateOrderStatus");
@@ -79,7 +77,7 @@ public class OrderController {
     }
 
     // Cancel Order
-    @DeleteMapping("/orders/{orderId}")
+    @DeleteMapping("/{orderId}")
     public ResponseEntity<String> cancelOrder(@PathVariable UUID orderId) {
 
         log.info("OrderController : DELETE cancelOrder");
