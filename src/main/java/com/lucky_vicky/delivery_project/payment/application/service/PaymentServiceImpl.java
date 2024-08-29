@@ -1,5 +1,7 @@
 package com.lucky_vicky.delivery_project.payment.application.service;
 
+import com.lucky_vicky.delivery_project.order.domain.entity.Order;
+import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentListDTO;
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentRequestDTO;
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentResponseDTO;
@@ -67,7 +69,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .totalPrice(order.getTotalPrice())
                 .status(paymentRequestDTO.getStatus())
                 .paymentMethod(paymentRequestDTO.getPaymentMethod())
-                .isDeleted(false)
                 .build();
 
         paymentRepository.save(payment);

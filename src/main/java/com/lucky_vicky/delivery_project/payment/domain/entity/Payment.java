@@ -41,9 +41,6 @@ public class Payment extends AuditingEntity {
     @Column(name = "payment_method", nullable = false)
     private PaymentMethodEnum paymentMethod;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = true;
-
     @PrePersist
     protected void createUUID(){
         if(id == null) id = UUID.randomUUID();
