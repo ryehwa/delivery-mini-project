@@ -16,41 +16,37 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Log4j2(topic = "Order Controller")
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
-    // GET OrderList
-    @GetMapping("/orders")
-    public Page<OrderListDTO> getOrderList(
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
-            @RequestParam(value = "desc", defaultValue = "true") boolean desc,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        log.info("OrderController : GET getOrderList");
-
-        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
-        if(size != 10 && size != 30 && size != 50){
-            size = 10;
-        }
-
-        Long userId = userDetails.getUser().getUserId();
-
-        return orderService.getOrderByUserId(userId, page-1, size, sortBy, desc);
-
-    }
+//    // GET OrderList
+//    @GetMapping("")
+//    public Page<OrderListDTO> getOrderList(
+//            @RequestParam(value = "page", defaultValue = "1") int page,
+//            @RequestParam(value = "size", defaultValue = "10") int size,
+//            @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
+//            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//
+//        log.info("OrderController : GET getOrderList");
+//
+//        Long userId = userDetails.getUser().getUserId();
+//
+//        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
+//
+//    }
 
     // Create Order
-    @PostMapping("/orders")
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("")
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO//, @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
 
         log.info("OrderController : POST createOrder");
 
-        Long userId = userDetails.getUser().getUserId();
-        orderRequestDTO.setUserId(userId);
+//        Long userId = userDetails.getUser().getUserId();
+//        orderRequestDTO.setUserId(userId);
 
         OrderResponseDTO dto = orderService.createOrder(orderRequestDTO);
 
@@ -58,7 +54,7 @@ public class OrderController {
     }
 
     // FindByOrderId
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDTO> findByOrderId(@PathVariable UUID orderId) {
 
         log.info("OrderController : GET findByOrderId");
@@ -70,7 +66,7 @@ public class OrderController {
     }
 
     // Update Order Status
-    @PutMapping("/orders/{orderId}")
+    @PutMapping("/{orderId}")
     public ResponseEntity<OrderUpdateStatusDTO> updateOrderStatus(@PathVariable UUID orderId, @RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO) {
 
         log.info("OrderController : PUT updateOrderStatus");
@@ -82,7 +78,7 @@ public class OrderController {
     }
 
     // Cancel Order
-    @DeleteMapping("/orders/{orderId}")
+    @DeleteMapping("/{orderId}")
     public ResponseEntity<String> cancelOrder(@PathVariable UUID orderId) {
 
         log.info("OrderController : DELETE cancelOrder");

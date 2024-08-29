@@ -1,7 +1,6 @@
 package com.lucky_vicky.delivery_project.order.application.dto;
 
 
-import com.lucky_vicky.delivery_project.order.domain.entity.OrderStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

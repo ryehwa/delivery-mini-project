@@ -1,7 +1,7 @@
 package com.lucky_vicky.delivery_project.order.application.dto;
 
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
-import com.lucky_vicky.delivery_project.order.domain.entity.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +20,7 @@ public class OrderUpdateStatusDTO {
 
     public static OrderUpdateStatusDTO toStatusDTO(Order order){
         return OrderUpdateStatusDTO.builder()
-                .orderId(order.getOrderId())
+                .orderId(order.getId())
                 .status(order.getStatus())
                 .build();
     }

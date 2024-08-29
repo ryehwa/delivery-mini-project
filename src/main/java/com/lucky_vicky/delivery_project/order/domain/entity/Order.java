@@ -1,9 +1,11 @@
 package com.lucky_vicky.delivery_project.order.domain.entity;
 
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
+import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +16,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "p_order")
-public class Order {
+public class Order extends AuditingEntity {
 
     @Id
     @Column(name = "id")
@@ -24,9 +26,9 @@ public class Order {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();
@@ -43,9 +45,6 @@ public class Order {
 
     @Column(name = "is_online", nullable = false)
     private boolean isOnline;
-
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
 
     @PrePersist
     protected void createUUID(){
