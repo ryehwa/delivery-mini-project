@@ -27,19 +27,16 @@ public class OrderController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
-            @RequestParam(value = "desc", defaultValue = "true") boolean desc,
+            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         log.info("OrderController : GET getOrderList");
 
-        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
-        if(size != 10 && size != 30 && size != 50){
-            size = 10;
-        }
+
 
         Long userId = userDetails.getUser().getUserId();
 
-        return orderService.getOrderByUserId(userId, page-1, size, sortBy, desc);
+        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
 
     }
 
