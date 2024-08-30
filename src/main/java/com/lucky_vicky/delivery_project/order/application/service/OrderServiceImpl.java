@@ -15,7 +15,10 @@ import com.lucky_vicky.delivery_project.product.domain.Product;
 import com.lucky_vicky.delivery_project.product.repository.ProductRepository;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
+import com.lucky_vicky.delivery_project.user.domain.User;
+import com.lucky_vicky.delivery_project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +33,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    //private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
     //private final DeliveryRepository deliveryRepository;
@@ -41,32 +45,32 @@ public class OrderServiceImpl implements OrderService {
     private static final long CANCEL_MINUTE = 5;
 
 
-//    /**
-//     * userId에 맞는 주문 목록 보기
-//     *
-//     * @param userId
-//     * @param page
-//     * @param size
-//     * @param sortBy
-//     * @return
-//     */
-//    @Override
-//    public Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean orderBy) {
-//
-//        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
-//        if(size != 10 && size != 30 && size != 50){
-//            size = 10;
-//        }
-//
-//        // 정렬 방향
-//        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
-//
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-//
-//        Page<Order> orderpage = orderRepository.findAllByUserId(userId, pageable);
-//
-//        return orderpage.map(OrderListDTO::toListDTO);
-//    }
+    /**
+     * userId에 맞는 주문 목록 보기
+     *
+     * @param userId
+     * @param page
+     * @param size
+     * @param sortBy
+     * @return
+     */
+    @Override
+    public Page<OrderListDTO> getOrderByUserId(UUID userId, int page, int size, String sortBy, boolean orderBy) {
+
+        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
+        if(size != 10 && size != 30 && size != 50){
+            size = 10;
+        }
+
+        // 정렬 방향
+        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Order> orderpage = orderRepository.findAllByUserId(userId, pageable);
+
+        return orderpage.map(OrderListDTO::toListDTO);
+    }
 
     /**
      * 주문 생성
@@ -79,15 +83,15 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
 
         // DB에서 user, store 조회
-//        User user = userRepository.findById(orderRequestDTO.getUserId()).orElseThrow(
-//                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User user = userRepository.findById(orderRequestDTO.getUserId()).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         Store store = storeRepository.findById(orderRequestDTO.getStoreId()).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         // order 객체 생성
         Order order = Order.builder()
-                //.user(user)
+                .user(user)
                 .store(store)
                 .isOnline(orderRequestDTO.isOnline())
                 .status(OrderStatusEnum.PENDING)
@@ -198,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessLogicException(ExceptionCode.ORDER_CANCEL_TIME_EXCEEDED);
         }
 
-        order.setStatus(OrderStatusEnum.CANCELLED);
+        order.setStatus(OrderStatusEnum.CANCELED);
         orderRepository.save(order);
 
     }

@@ -5,10 +5,12 @@ import com.lucky_vicky.delivery_project.order.application.dto.OrderRequestDTO;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderResponseDTO;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderUpdateStatusDTO;
 import com.lucky_vicky.delivery_project.order.application.service.OrderService;
+import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,32 +23,32 @@ public class OrderController {
 
     private final OrderService orderService;
 
-//    // GET OrderList
-//    @GetMapping("")
-//    public Page<OrderListDTO> getOrderList(
-//            @RequestParam(value = "page", defaultValue = "1") int page,
-//            @RequestParam(value = "size", defaultValue = "10") int size,
-//            @RequestParam(value = "sort", defaultValue = "createAt") String sortBy,
-//            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
-//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        log.info("OrderController : GET getOrderList");
-//
-//        Long userId = userDetails.getUser().getUserId();
-//
-//        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
-//
-//    }
+    // GET OrderList
+    @GetMapping("")
+    public Page<OrderListDTO> getOrderList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "desc", defaultValue = "true") boolean orderBy,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        log.info("OrderController : GET getOrderList");
+
+        UUID userId = userPrincipal.getId();
+
+        return orderService.getOrderByUserId(userId, page-1, size, sortBy, orderBy);
+
+    }
 
     // Create Order
     @PostMapping("")
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO//, @AuthenticationPrincipal UserDetailsImpl userDetails
+    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderRequestDTO, @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
 
         log.info("OrderController : POST createOrder");
 
-//        Long userId = userDetails.getUser().getUserId();
-//        orderRequestDTO.setUserId(userId);
+        UUID userId = userPrincipal.getId();
+        orderRequestDTO.setUserId(userId);
 
         OrderResponseDTO dto = orderService.createOrder(orderRequestDTO);
 
@@ -58,6 +60,8 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> findByOrderId(@PathVariable UUID orderId) {
 
         log.info("OrderController : GET findByOrderId");
+
+        log.info("orderID: " + orderId);
 
         OrderResponseDTO dto = orderService.findOrderById(orderId);
 

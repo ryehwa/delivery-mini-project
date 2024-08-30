@@ -7,6 +7,8 @@ import com.lucky_vicky.delivery_project.product.domain.Product;
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import com.lucky_vicky.delivery_project.product.dto.ProductResponseDto;
 import com.lucky_vicky.delivery_project.product.repository.ProductRepository;
+import com.lucky_vicky.delivery_project.store.domain.Store;
+import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,11 +25,16 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final StoreRepository storeRepository;
+
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         // 권한 체크
 
+        Store store = storeRepository.findById(productRequestDto.getStoreId()).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+
         // dto -> Entity
-        Product product = new Product(productRequestDto);
+        Product product = new Product(productRequestDto, store);
         // 중복 제품 확인
         if(productRepository.existsByName(product.getName())) {
             throw new BusinessLogicException(ExceptionCode.EXIST_PRODUCT);

@@ -3,6 +3,7 @@ package com.lucky_vicky.delivery_project.order.domain.entity;
 import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
 import com.lucky_vicky.delivery_project.store.domain.Store;
+import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,9 +27,9 @@ public class Order extends AuditingEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();

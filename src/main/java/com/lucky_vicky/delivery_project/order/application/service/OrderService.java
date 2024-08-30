@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface OrderService {
 
     // getList
-    // Page<OrderListDTO> getOrderByUserId(Long userId, int page, int size, String sortBy, boolean desc);
+    Page<OrderListDTO> getOrderByUserId(UUID userId, int page, int size, String sortBy, boolean desc);
 
     // Create Order
     OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO);

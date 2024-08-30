@@ -7,6 +7,8 @@ import com.lucky_vicky.delivery_project.payment.application.dto.PaymentRequestDT
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentResponseDTO;
 import com.lucky_vicky.delivery_project.payment.domain.entity.Payment;
 import com.lucky_vicky.delivery_project.payment.domain.repository.PaymentRepository;
+import com.lucky_vicky.delivery_project.user.domain.User;
+import com.lucky_vicky.delivery_project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +37,7 @@ public class PaymentServiceImpl implements PaymentService {
      * @return Page<PaymentListDTO>
      */
     @Override
-    public Page<PaymentListDTO> getPaymentList(Long userId, int page, int size, String sortBy, boolean desc) {
+    public Page<PaymentListDTO> getPaymentList(UUID userId, int page, int size, String sortBy, boolean desc) {
 
         // 정렬 방향
         Sort.Direction direction = desc ? Sort.Direction.DESC : Sort.Direction.ASC;

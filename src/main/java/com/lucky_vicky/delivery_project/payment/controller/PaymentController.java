@@ -4,10 +4,12 @@ import com.lucky_vicky.delivery_project.payment.application.dto.PaymentListDTO;
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentRequestDTO;
 import com.lucky_vicky.delivery_project.payment.application.dto.PaymentResponseDTO;
 import com.lucky_vicky.delivery_project.payment.application.service.PaymentService;
+import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -26,11 +28,11 @@ public class PaymentController {
                                                @RequestParam(value = "size", defaultValue = "10") int size,
                                                @RequestParam(value = "sortBy", defaultValue = "createAt") String sortBy,
                                                @RequestParam(value = "desc", defaultValue = "true") boolean desc,
-                                               @AuthenticationPrincipal UserDetails userDetails) {
+                                               @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
         log.info("PaymentController : GET getPaymentList");
 
-        Long userId = userDetails.getUser().getUserId();
+        UUID userId = userPrincipal.getId();
         return paymentService.getPaymentList(userId, page, size, sortBy, desc);
     }
 
