@@ -33,8 +33,8 @@ public class Order extends AuditingEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProductList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDelivery> orderDeliveryList = new ArrayList<>();
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<OrderDelivery> orderDeliveryList = new ArrayList<>();
 
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
