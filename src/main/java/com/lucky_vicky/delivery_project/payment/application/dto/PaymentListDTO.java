@@ -16,14 +16,14 @@ public class PaymentListDTO {
 
     private UUID paymentId;
     private UUID orderId;
-    private Long userId;
+    private UUID userId;
 
     // Entity -> PaymentListDTO
     public static PaymentListDTO toDTO(Payment payment){
         return PaymentListDTO.builder()
                 .paymentId(payment.getId())
                 .orderId(payment.getOrder().getId())
-                .userId(payment.getUser().getUserId())
+                .userId(payment.getUser().getId())
                 .build();
     }
 }
