@@ -89,7 +89,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 //.user(user)
                 .store(store)
-                .totalPrice(orderRequestDTO.getTotalPrice())
                 .isOnline(orderRequestDTO.isOnline())
                 .status(OrderStatusEnum.PENDING)
                 .build();
@@ -108,6 +107,12 @@ public class OrderServiceImpl implements OrderService {
 
         // order에 orderProductList 주입
         order.setOrderProductList(orderProductList);
+
+        // totalPrice 계산
+        int totalPrice = order.getOrderProductList().stream().mapToInt(p -> p.getProduct().getPrice() * p.getAmount()).sum();
+
+        // order에 totalPrice 주입
+        order.setTotalPrice(totalPrice);
 
 //        // Delivery 객체 생성
 //        Delivery delivery = Delivery.builder()
@@ -140,6 +145,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderId
      * @return
      */
+    @Transactional(readOnly = true)
     @Override
     public OrderResponseDTO findOrderById(UUID orderId) {
 
