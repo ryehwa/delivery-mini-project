@@ -16,6 +16,7 @@ import com.lucky_vicky.delivery_project.product.repository.ProductRepository;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -198,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BusinessLogicException(ExceptionCode.ORDER_CANCEL_TIME_EXCEEDED);
         }
 
-        order.setStatus(OrderStatusEnum.CANCELLED);
+        order.setStatus(OrderStatusEnum.CANCELED);
         orderRepository.save(order);
 
     }
