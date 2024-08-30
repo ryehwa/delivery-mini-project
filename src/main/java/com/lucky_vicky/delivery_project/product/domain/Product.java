@@ -1,6 +1,7 @@
 package com.lucky_vicky.delivery_project.product.domain;
 
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
+import com.lucky_vicky.delivery_project.store.domain.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +34,9 @@ public class Product {
     @Column(nullable = false)
     private boolean isDeleted;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "store_id", nullable = false)
-//    private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
 
     @PrePersist
     protected void createUUID(){
