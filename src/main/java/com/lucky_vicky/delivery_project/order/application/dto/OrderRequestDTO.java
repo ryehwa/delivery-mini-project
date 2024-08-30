@@ -19,7 +19,6 @@ public class OrderRequestDTO {
     private Long userId;
     private UUID storeId;
     private List<OrderProductDTO> orderProductList = new ArrayList<>();
-    private int totalPrice;
     private boolean isOnline;
 
     // 배송지
