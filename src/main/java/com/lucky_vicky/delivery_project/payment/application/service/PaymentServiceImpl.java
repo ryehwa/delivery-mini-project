@@ -33,14 +33,19 @@ public class PaymentServiceImpl implements PaymentService {
      * @param page
      * @param size
      * @param sortBy
-     * @param desc
+     * @param orderBy
      * @return Page<PaymentListDTO>
      */
     @Override
-    public Page<PaymentListDTO> getPaymentList(UUID userId, int page, int size, String sortBy, boolean desc) {
+    public Page<PaymentListDTO> getPaymentList(UUID userId, int page, int size, String sortBy, boolean orderBy) {
+
+        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
+        if(size != 10 && size != 30 && size != 50){
+            size = 10;
+        }
 
         // 정렬 방향
-        Sort.Direction direction = desc ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
