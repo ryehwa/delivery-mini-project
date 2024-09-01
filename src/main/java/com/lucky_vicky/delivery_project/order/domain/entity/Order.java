@@ -2,6 +2,7 @@ package com.lucky_vicky.delivery_project.order.domain.entity;
 
 import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.order.domain.enums.OrderStatusEnum;
+import com.lucky_vicky.delivery_project.review.domain.entity.Review;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
@@ -46,6 +47,9 @@ public class Order extends AuditingEntity {
 
     @Column(name = "is_online", nullable = false)
     private boolean isOnline;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Review review;
 
     @PrePersist
     protected void createUUID(){
