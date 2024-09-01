@@ -2,6 +2,7 @@ package com.lucky_vicky.delivery_project.review.controller;
 
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
 import com.lucky_vicky.delivery_project.review.application.service.ReviewService;
 import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,18 @@ public class ReviewController {
         log.info("Review Controller | GET Find Review ById");
 
         ReviewResponseDTO result = reviewService.findReviewById(reviewId);
+
+        return ResponseEntity.ok(result);
+    }
+
+    // 가게 후기 수정
+    @PutMapping("/reviews/{reviewId}")
+    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable UUID reviewId, @RequestBody ReviewUpdateDTO reviewUpdateDTO){
+
+        log.info("Review Controller | PUT Update Review");
+
+        reviewUpdateDTO.setReviewId(reviewId);
+        ReviewResponseDTO result = reviewService.updateReview(reviewUpdateDTO);
 
         return ResponseEntity.ok(result);
     }

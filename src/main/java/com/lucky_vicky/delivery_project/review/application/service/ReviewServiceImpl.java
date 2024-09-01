@@ -6,6 +6,7 @@ import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
 import com.lucky_vicky.delivery_project.review.domain.entity.Review;
 import com.lucky_vicky.delivery_project.review.domain.repository.ReviewRepository;
 import com.lucky_vicky.delivery_project.store.domain.Store;
@@ -63,6 +64,25 @@ public class ReviewServiceImpl implements ReviewService{
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        return ReviewResponseDTO.toDTO(review);
+    }
+
+    /**
+     * 가게 후기 수정
+     * @param reviewUpdateDTO 
+     * @return
+     */
+    @Override
+    public ReviewResponseDTO updateReview(ReviewUpdateDTO reviewUpdateDTO) {
+
+        Review review = reviewRepository.findById(reviewUpdateDTO.getReviewId()).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        review.setReview(reviewUpdateDTO.getReview());
+        review.setRate(reviewUpdateDTO.getRate());
+
+        reviewRepository.save(review);
 
         return ReviewResponseDTO.toDTO(review);
     }

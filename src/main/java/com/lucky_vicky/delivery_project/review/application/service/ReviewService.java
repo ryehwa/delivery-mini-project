@@ -2,6 +2,7 @@ package com.lucky_vicky.delivery_project.review.application.service;
 
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
 
 import java.util.UUID;
 
@@ -12,4 +13,7 @@ public interface ReviewService {
     
     // 가게 후기 조회
     ReviewResponseDTO findReviewById(UUID reviewId);
+
+    // 가게 후기 수정
+    ReviewResponseDTO updateReview(ReviewUpdateDTO reviewUpdateDTO);
 }
