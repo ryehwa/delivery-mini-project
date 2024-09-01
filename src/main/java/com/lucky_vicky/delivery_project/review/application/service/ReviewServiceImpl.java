@@ -130,7 +130,7 @@ public class ReviewServiceImpl implements ReviewService {
         Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-        Page<Review> reviewPage = reviewRepository.findAllByStoreId(storeId, pageable);
+        Page<Review> reviewPage = reviewRepository.findAllByStoreIdAndIsDeletedFalse(storeId, pageable);
 
         return reviewPage.map(ReviewListDTO::toDTO);
     }
