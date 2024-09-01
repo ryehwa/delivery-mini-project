@@ -15,7 +15,8 @@ public enum ExceptionCode {
     ORDER_CANCEL_TIME_EXCEEDED(422,"주문 취소는 주문 후 5분 이내에만 가능합니다."),
 
     EMPTY_AUTHENTICATION(401, "인증 정보가 없습니다."),
-    ACCESS_DENIED_ERROR(403, "접근 권한이 없습니다.");
+    ACCESS_DENIED_ERROR(403, "접근 권한이 없습니다."),
+    INVALID_CATEGORY_TYPE(400, "유효하지 않은 카테고리 타입입니다.");
 
 
     private int status;
