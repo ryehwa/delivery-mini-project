@@ -4,6 +4,7 @@ import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
 import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewListDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
@@ -14,6 +15,10 @@ import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import com.lucky_vicky.delivery_project.user.domain.User;
 import com.lucky_vicky.delivery_project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -103,5 +108,30 @@ public class ReviewServiceImpl implements ReviewService {
 
         review.setIsDeleted(true);
         reviewRepository.save(review);
+    }
+
+    /**
+     * 가게 후기 목록 조회
+     * @param storeId
+     * @param page
+     * @param size
+     * @param sortBy
+     * @param orderBy
+     * @return
+     */
+    @Override
+    public Page<ReviewListDTO> getReviewsByStore(UUID storeId, int page, int size, String sortBy, boolean orderBy) {
+
+        // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
+        if (size != 10 && size != 30 && size != 50) {
+            size = 10;
+        }
+
+        Sort.Direction direction = orderBy ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Review> reviewPage = reviewRepository.findAllByStoreId(storeId, pageable);
+
+        return reviewPage.map(ReviewListDTO::toDTO);
     }
 }
