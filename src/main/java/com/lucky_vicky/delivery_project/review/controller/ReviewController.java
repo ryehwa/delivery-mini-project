@@ -1,6 +1,7 @@
 package com.lucky_vicky.delivery_project.review.controller;
 
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
 import com.lucky_vicky.delivery_project.review.application.service.ReviewService;
 import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,16 @@ public class ReviewController {
         reviewService.createReview(reviewRequestDTO);
 
         return ResponseEntity.ok("후기 작성이 성공적으로 되었습니다.");
+    }
 
+    // 가게 후기 조회
+    @GetMapping("/reviews/{reviewId}")
+    public ResponseEntity<ReviewResponseDTO> findReviewById(@PathVariable("reviewId") UUID reviewId){
+
+        log.info("Review Controller | GET Find Review ById");
+
+        ReviewResponseDTO result = reviewService.findReviewById(reviewId);
+
+        return ResponseEntity.ok(result);
     }
 }

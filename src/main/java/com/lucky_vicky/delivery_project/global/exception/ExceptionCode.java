@@ -11,7 +11,8 @@ public enum ExceptionCode {
     ORDER_NOT_FOUNT(404, "주문을 찾을 수 없습니다."),
     STORE_NOT_FOUND(404,"가게를 찾을 수 없습니다."),
     USER_NOT_FOUND(404,"사용자를 찾을 수 없습니다."),
-    ORDER_CANCEL_TIME_EXCEEDED(422,"주문 취소는 주문 후 5분 이내에만 가능합니다.");
+    ORDER_CANCEL_TIME_EXCEEDED(422,"주문 취소는 주문 후 5분 이내에만 가능합니다."),
+    REVIEW_NOT_FOUND(404, "후기를 찾을 수 없습니다.");
 
 
 

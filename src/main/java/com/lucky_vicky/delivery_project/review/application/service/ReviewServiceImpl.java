@@ -5,6 +5,7 @@ import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
 import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
 import com.lucky_vicky.delivery_project.review.domain.entity.Review;
 import com.lucky_vicky.delivery_project.review.domain.repository.ReviewRepository;
 import com.lucky_vicky.delivery_project.store.domain.Store;
@@ -13,6 +14,8 @@ import com.lucky_vicky.delivery_project.user.domain.User;
 import com.lucky_vicky.delivery_project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,5 +51,19 @@ public class ReviewServiceImpl implements ReviewService{
                 .build();
 
         reviewRepository.save(review);
+    }
+
+    /**
+     * 가게 후기 조회
+     * @param reviewId
+     * @return
+     */
+    @Override
+    public ReviewResponseDTO findReviewById(UUID reviewId) {
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        return ReviewResponseDTO.toDTO(review);
     }
 }
