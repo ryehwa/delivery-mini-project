@@ -59,4 +59,15 @@ public class ReviewController {
 
         return ResponseEntity.ok(result);
     }
+
+    // 가게 후기 삭제
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable UUID reviewId){
+
+        log.info("Review Controller | DELETE Delete Review");
+
+        reviewService.deleteReview(reviewId);
+
+        return ResponseEntity.ok("후기 삭제가 성공적으로 되었습니다.");
+    }
 }

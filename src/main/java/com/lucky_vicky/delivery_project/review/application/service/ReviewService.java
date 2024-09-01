@@ -16,4 +16,7 @@ public interface ReviewService {
 
     // 가게 후기 수정
     ReviewResponseDTO updateReview(ReviewUpdateDTO reviewUpdateDTO);
+
+    // 가게 후기 삭제
+    void deleteReview (UUID reviewId);
 }

@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ReviewServiceImpl implements ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
@@ -29,7 +29,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     /**
      * 가게 후기 작성
-     * @param reviewRequestDTO 
+     *
+     * @param reviewRequestDTO
      */
     @Override
     public void createReview(ReviewRequestDTO reviewRequestDTO) {
@@ -38,7 +39,7 @@ public class ReviewServiceImpl implements ReviewService{
                 () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         Store store = storeRepository.findById(reviewRequestDTO.getStoreId()).orElseThrow(
-                ()-> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
+                () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         Order order = orderRepository.findById(reviewRequestDTO.getOrderId()).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUNT));
@@ -56,6 +57,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     /**
      * 가게 후기 조회
+     *
      * @param reviewId
      * @return
      */
@@ -70,7 +72,8 @@ public class ReviewServiceImpl implements ReviewService{
 
     /**
      * 가게 후기 수정
-     * @param reviewUpdateDTO 
+     *
+     * @param reviewUpdateDTO
      * @return
      */
     @Override
@@ -85,5 +88,20 @@ public class ReviewServiceImpl implements ReviewService{
         reviewRepository.save(review);
 
         return ReviewResponseDTO.toDTO(review);
+    }
+
+    /**
+     * 가게 후기 삭제
+     *
+     * @param reviewId
+     */
+    @Override
+    public void deleteReview(UUID reviewId) {
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        review.setIsDeleted(true);
+        reviewRepository.save(review);
     }
 }
