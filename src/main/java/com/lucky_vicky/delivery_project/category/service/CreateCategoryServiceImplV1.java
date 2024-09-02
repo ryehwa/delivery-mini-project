@@ -39,6 +39,7 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
         StoreCategory storeCategory = StoreCategory.builder()
                 .name(createCategoryRequestDto.name())
                 .build();
+        storeCategoryRepository.save(storeCategory);
         return CategoryResponseDto.fromEntity(storeCategory);
     }
 
@@ -46,6 +47,7 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
         LocalCategory localCategory = LocalCategory.builder()
                 .name(createCategoryRequestDto.name())
                 .build();
+        localCategoryRepository.save(localCategory);
         return CategoryResponseDto.fromEntity(localCategory);
     }
 }
