@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.product.domain;
 
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.product.dto.ProductRequestDto;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Product {
+public class Product extends AuditingEntity {
 
     @Id
     private UUID id;
@@ -29,10 +30,7 @@ public class Product {
     private int price;
 
     @Column(nullable = false)
-    private boolean isHidden;
-
-    @Column(nullable = false)
-    private boolean isDeleted;
+    private boolean isHidden = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
@@ -43,10 +41,11 @@ public class Product {
         if(id == null) id = UUID.randomUUID();
     }
 
-    public Product(ProductRequestDto productRequestDto) {
+    public Product(ProductRequestDto productRequestDto, Store store) {
         this.name = productRequestDto.getName();
         this.description = productRequestDto.getDescription();
         this.price = productRequestDto.getPrice();
+        this.store = store;
         this.isHidden = productRequestDto.isHidden();
     }
 

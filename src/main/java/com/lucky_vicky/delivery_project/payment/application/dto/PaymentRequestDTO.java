@@ -16,7 +16,7 @@ import java.util.UUID;
 public class PaymentRequestDTO {
 
     private UUID orderId;
-    private Long userId;
+    private UUID userId;
     private int totalPrice;
     private PaymentStatusEnum status = PaymentStatusEnum.COMPLETED;
     private PaymentMethodEnum paymentMethod;

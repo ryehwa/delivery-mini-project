@@ -4,6 +4,7 @@ import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentMethodEnum;
 import com.lucky_vicky.delivery_project.payment.domain.enums.PaymentStatusEnum;
+import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

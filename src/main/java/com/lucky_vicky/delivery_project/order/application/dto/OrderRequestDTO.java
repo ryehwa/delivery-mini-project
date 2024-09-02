@@ -16,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class OrderRequestDTO {
 
-    private Long userId;
+    private UUID userId;
     private UUID storeId;
     private List<OrderProductDTO> orderProductList = new ArrayList<>();
     private boolean isOnline;

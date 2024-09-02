@@ -18,7 +18,7 @@ public class PaymentResponseDTO {
 
     private UUID paymentId;
     private UUID orderId;
-    private Long userId;
+    private UUID userId;
     private int totalPrice;
     private PaymentStatusEnum status;
     private PaymentMethodEnum paymentMethod;
@@ -28,7 +28,7 @@ public class PaymentResponseDTO {
         return PaymentResponseDTO.builder()
                 .paymentId(payment.getId())
                 .orderId(payment.getOrder().getId())
-                .userId(payment.getUser().getUserId())
+                .userId(payment.getUser().getId())
                 .totalPrice(payment.getTotalPrice())
                 .status(payment.getStatus())
                 .paymentMethod(payment.getPaymentMethod())
