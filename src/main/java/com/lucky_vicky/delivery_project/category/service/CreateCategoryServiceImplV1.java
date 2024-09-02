@@ -23,11 +23,11 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
     @Override
     @Transactional
     public CategoryResponseDto createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
-        String type = createCategoryRequestDto.type().toUpperCase();
+        String type = createCategoryRequestDto.type();
         CategoryResponseDto categoryResponseDto;
-        if (type.equals(CategoryType.STORE.getCategoryType())) {
+        if (type.equalsIgnoreCase(CategoryType.STORE.getCategoryType())) {
             categoryResponseDto = createStoreCategory(createCategoryRequestDto);
-        } else if (type.equals(CategoryType.LOCAL.getCategoryType())) {
+        } else if (type.equalsIgnoreCase(CategoryType.LOCAL.getCategoryType())) {
             categoryResponseDto = createLocalCategory(createCategoryRequestDto);
         } else {
             throw new BusinessLogicException(ExceptionCode.INVALID_CATEGORY_TYPE);
