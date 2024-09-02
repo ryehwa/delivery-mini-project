@@ -11,6 +11,8 @@ import com.lucky_vicky.delivery_project.store.dto.StoreUUIDResponseDto;
 import com.lucky_vicky.delivery_project.store.repository.StoreCategoryMapperRepository;
 import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
 import com.lucky_vicky.delivery_project.store.usecase.CreateStoreUseCase;
+import com.lucky_vicky.delivery_project.user.domain.User;
+import com.lucky_vicky.delivery_project.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +28,21 @@ public class CreateStoreServiceImplV1 implements CreateStoreUseCase {
     private final StoreRepository storeRepository;
     private final StoreCategoryRepository storeCategoryRepository;
     private final StoreCategoryMapperRepository storeCategoryMapperRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public StoreUUIDResponseDto createStore(CreateStoreRequestDto createStoreRequestDto) {
+    public StoreUUIDResponseDto createStore(CreateStoreRequestDto createStoreRequestDto, UUID userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
         // Store 객체 생성 및 저장
         Store newStore = Store.builder()
                 .name(createStoreRequestDto.name())
                 .address(createStoreRequestDto.address())
                 .number(createStoreRequestDto.number())
+                .user(user)
                 .build();
         storeRepository.save(newStore);
 
