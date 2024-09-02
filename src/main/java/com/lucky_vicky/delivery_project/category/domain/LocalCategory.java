@@ -44,4 +44,7 @@ public class LocalCategory extends AuditingEntity {
     }
 
     /* -------------- Methods -------------- */
+    public void delete() {
+        this.setIsDeleted(true);
+    }
 }

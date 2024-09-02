@@ -42,5 +42,8 @@ public class StoreCategory extends AuditingEntity {
     }
 
     /* -------------- Methods -------------- */
+    public void delete() {
+        this.setIsDeleted(true);
+    }
 
 }

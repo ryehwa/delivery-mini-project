@@ -1,5 +1,7 @@
 package com.lucky_vicky.delivery_project.order.application.service;
 
+import com.lucky_vicky.delivery_project.delivery.domain.Delivery;
+import com.lucky_vicky.delivery_project.delivery.repository.DeliveryRepository;
 import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
 import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.order.application.dto.OrderListDTO;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final ProductRepository productRepository;
-    //private final DeliveryRepository deliveryRepository;
+    private final DeliveryRepository deliveryRepository;
 
     private static final long CANCEL_MINUTE = 5;
 
@@ -58,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderListDTO> getOrderByUserId(UUID userId, int page, int size, String sortBy, boolean orderBy) {
 
         // 사이즈 10,30,50 이외의 값이 들어왔을 때 값 고정
-        if(size != 10 && size != 30 && size != 50){
+        if (size != 10 && size != 30 && size != 50) {
             size = 10;
         }
 
@@ -118,25 +121,45 @@ public class OrderServiceImpl implements OrderService {
         // order에 totalPrice 주입
         order.setTotalPrice(totalPrice);
 
-//        // Delivery 객체 생성
-//        Delivery delivery = Delivery.builder()
-//                .user(user)
-//                .address(orderRequestDTO.getAddress())
-//                .receipientName(orderRequestDTO.getRecipientName())
-//                .isDefault(orderRequestDTO.isDefault())
-//                .build();
-//
-//        delivery = deliveryRepository.save(delivery);
-//
-//        // OrderDelivery 리스트 생성
-//        OrderDelivery orderDelivery = OrderDelivery.builder()
-//                .order(order)
-//                .delivery(delivery)
-//                .isDeleted(false)
-//                .build();
-//
-//        // order에 orderDelivery 주입
-//        order.getOrderDeliveryList().add(orderDelivery);
+        // 기본 배송지 설정 default true 일 때
+        if (orderRequestDTO.isDefault()) {
+            // 사용자 ID와 기본 배송지 여부를 기반으로 배송지 조회
+            Delivery delivery = deliveryRepository.findByUserIdAndIsDefault(
+                    orderRequestDTO.getUserId(), true);
+
+            if (delivery == null) {
+                throw new BusinessLogicException(ExceptionCode.DEFAULT_DELIVERY_NOT_FOUND);
+            }
+
+            // OrderDelivery 리스트 생성
+            OrderDelivery orderDelivery = OrderDelivery.builder()
+                    .order(order)
+                    .delivery(delivery)
+                    .build();
+
+            // order에 orderDelivery 주입
+            order.setOrderDeliveryList(Arrays.asList(orderDelivery));
+
+        } else {
+            // Delivery 객체 생성
+            Delivery delivery = Delivery.builder()
+                    .user(user)
+                    .address(orderRequestDTO.getAddress())
+                    .recipientName(orderRequestDTO.getRecipientName())
+                    .isDefault(orderRequestDTO.isDefaultCheck())
+                    .build();
+
+            delivery = deliveryRepository.save(delivery);
+
+            // OrderDelivery 리스트 생성
+            OrderDelivery orderDelivery = OrderDelivery.builder()
+                    .order(order)
+                    .delivery(delivery)
+                    .build();
+
+            // order에 orderDelivery 주입
+            order.setOrderDeliveryList(Arrays.asList(orderDelivery));
+        }
 
         orderRepository.save(order);
 

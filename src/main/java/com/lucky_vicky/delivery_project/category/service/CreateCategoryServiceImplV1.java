@@ -8,6 +8,8 @@ import com.lucky_vicky.delivery_project.category.dto.CreateCategoryRequestDto;
 import com.lucky_vicky.delivery_project.category.repository.LocalCategoryRepository;
 import com.lucky_vicky.delivery_project.category.repository.StoreCategoryRepository;
 import com.lucky_vicky.delivery_project.category.usecase.CreateCategoryUseCase;
+import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
+import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +25,12 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
     public CategoryResponseDto createCategory(CreateCategoryRequestDto createCategoryRequestDto) {
         String type = createCategoryRequestDto.type();
         CategoryResponseDto categoryResponseDto;
-        if (type.equals(CategoryType.STORE.getCategoryType())) {
+        if (type.equalsIgnoreCase(CategoryType.STORE.getCategoryType())) {
             categoryResponseDto = createStoreCategory(createCategoryRequestDto);
-        } else if (type.equals(CategoryType.LOCAL.getCategoryType())) {
+        } else if (type.equalsIgnoreCase(CategoryType.LOCAL.getCategoryType())) {
             categoryResponseDto = createLocalCategory(createCategoryRequestDto);
         } else {
-            throw new IllegalArgumentException("올바르지 않은 category type입니다.");
+            throw new BusinessLogicException(ExceptionCode.INVALID_CATEGORY_TYPE);
         }
         return categoryResponseDto;
     }
@@ -37,6 +39,7 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
         StoreCategory storeCategory = StoreCategory.builder()
                 .name(createCategoryRequestDto.name())
                 .build();
+        storeCategoryRepository.save(storeCategory);
         return CategoryResponseDto.fromEntity(storeCategory);
     }
 
@@ -44,6 +47,7 @@ public class CreateCategoryServiceImplV1 implements CreateCategoryUseCase {
         LocalCategory localCategory = LocalCategory.builder()
                 .name(createCategoryRequestDto.name())
                 .build();
+        localCategoryRepository.save(localCategory);
         return CategoryResponseDto.fromEntity(localCategory);
     }
 }

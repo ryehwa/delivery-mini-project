@@ -18,4 +18,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, UUID> {
     List<Delivery> findAllByUser(User user);
 
     Page<Delivery> findAllByUser(User user, Pageable pageable);
+
+    Delivery findByUserIdAndIsDefault(UUID userId, boolean isDefault);
 }

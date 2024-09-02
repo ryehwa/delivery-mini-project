@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.order.domain.entity;
 
+import com.lucky_vicky.delivery_project.delivery.domain.Delivery;
 import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,9 +26,9 @@ public class OrderDelivery extends AuditingEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-//    @ManyToOne
-//    @JoinColumn(name = "delivery_id", nullable = false)
-//    private Delivery delivery;
+    @ManyToOne
+    @JoinColumn(name = "delivery_id", nullable = false)
+    private Delivery delivery;
 
     @PrePersist
     protected void createUUID(){

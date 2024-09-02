@@ -1,5 +1,7 @@
 package com.lucky_vicky.delivery_project.store.service;
 
+import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
+import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import com.lucky_vicky.delivery_project.store.dto.StoreDetailResponseDto;
 import com.lucky_vicky.delivery_project.store.repository.StoreRepository;
@@ -17,8 +19,8 @@ public class ReadStoreDetailServiceImplV1 implements ReadStoreDetailUseCase {
 
     @Override
     public StoreDetailResponseDto readStoreDetail(UUID storeId) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("가게가 존재하지 않습니다."));
+        Store store = storeRepository.findByIdAnAndIsDeletedFalse(storeId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         return StoreDetailResponseDto.fromEntity(store);
     }

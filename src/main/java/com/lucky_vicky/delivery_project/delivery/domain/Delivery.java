@@ -1,14 +1,9 @@
 package com.lucky_vicky.delivery_project.delivery.domain;
 
 import com.lucky_vicky.delivery_project.delivery.dto.DeliveryRequestDto;
-import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
-import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
-import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -16,16 +11,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "p_delivery")
-public class Delivery extends AuditingEntity {
+public class Delivery {
 
     @Id
     private UUID id;
     private String address;
     private String recipientName;
     private boolean isDefault;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     //UUID 자동생성

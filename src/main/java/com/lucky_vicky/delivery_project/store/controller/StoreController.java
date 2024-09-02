@@ -1,11 +1,15 @@
 package com.lucky_vicky.delivery_project.store.controller;
 
+import com.lucky_vicky.delivery_project.global.annotation.UserId;
 import com.lucky_vicky.delivery_project.store.dto.CreateStoreRequestDto;
 import com.lucky_vicky.delivery_project.store.dto.UpdateStoreRequestDto;
 import com.lucky_vicky.delivery_project.store.usecase.*;
+import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,7 +28,6 @@ public class StoreController {
     /**
      * 가게 목록 조회
      * PUBLIC
-     * 인증/인가 추가 해야함.
      * */
     @GetMapping("")
     public ResponseEntity<?> readStoreList(
@@ -39,7 +42,6 @@ public class StoreController {
     /**
      * 가게 검색
      * PUBLIC
-     * 인증/인가 추가 해야함.
      * */
     @GetMapping("/search")
     public ResponseEntity<?> searchStore(
@@ -53,7 +55,6 @@ public class StoreController {
     /**
      * 가게 상세 조회
      * PUBLIC
-     * 카테고리 추가, 인증/인가 추가 해야함.
      * */
     @GetMapping("/{storeId}")
     public ResponseEntity<?> readStoreDetail(
@@ -65,14 +66,13 @@ public class StoreController {
     /**
      * 가게 정보 변경
      * STORE
-     * 카테고리 추가, 인증/인가 추가 해야함.
      * */
     @PutMapping("")
     public ResponseEntity<?> updateStoreByOwner(
-            // 토큰 받기
+            @UserId UUID userId,
             @RequestBody UpdateStoreRequestDto updateStoreRequestDto
     ) {
-        return ResponseEntity.ok(updateStoreUseCase.updateStoreByOwner(updateStoreRequestDto));
+        return ResponseEntity.ok(updateStoreUseCase.updateStoreByOwner(userId, updateStoreRequestDto));
     }
 
     /**
@@ -81,29 +81,31 @@ public class StoreController {
      * */
     @DeleteMapping("")
     public ResponseEntity<?> deleteStoreByOwner(
-            // 토큰 받기
+            @UserId UUID userId
     ) {
-        deleteStoreUseCase.deleteStoreByOwner();
+        deleteStoreUseCase.deleteStoreByOwner(userId);
         return ResponseEntity.noContent().build();
     }
 
     /**
      * 가게 생성 요청
      * ADMIN, STORE
-     * 카테고리 추가, 인증/인가 추가 해야함.
      * */
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STORE')")
     @PostMapping("")
     public ResponseEntity<?> createStore(
-            @RequestBody CreateStoreRequestDto createStoreRequestDto
-    ) {
-        return ResponseEntity.ok(createStoreUseCase.createStore(createStoreRequestDto));
+            @RequestBody CreateStoreRequestDto createStoreRequestDto, @AuthenticationPrincipal UserPrincipal userPrincipal
+            ) {
+
+        UUID userId = userPrincipal.getId();
+        return ResponseEntity.ok(createStoreUseCase.createStore(createStoreRequestDto, userId));
     }
 
     /**
      * 가게 생성 수락
      * ADMIN
-     * 카테고리 추가, 인증/인가 추가 해야함.
      * */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{storeId}/acceptance")
     public ResponseEntity<?> acceptStore(@PathVariable UUID storeId) {
         return ResponseEntity.ok(createStoreUseCase.acceptStore(storeId));
@@ -112,8 +114,8 @@ public class StoreController {
     /**
      * 가게 정보 변경
      * ADMIN
-     * 카테고리 추가, 인증/인가 추가 해야함.
      * */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{storeId}")
     public ResponseEntity<?> updateStoreByAdmin(
             @PathVariable UUID storeId,
@@ -126,6 +128,7 @@ public class StoreController {
      * 가게 삭제
      * ADMIN
      * */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{storeId}")
     public ResponseEntity<?> deleteStoreByAdmin(
             @PathVariable UUID storeId
