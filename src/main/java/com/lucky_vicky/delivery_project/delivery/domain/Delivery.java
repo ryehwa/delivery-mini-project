@@ -1,6 +1,7 @@
 package com.lucky_vicky.delivery_project.delivery.domain;
 
 import com.lucky_vicky.delivery_project.delivery.dto.DeliveryRequestDto;
+import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
 import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @Table(name = "p_delivery")
-public class Delivery {
+public class Delivery extends AuditingEntity {
 
     @Id
     private UUID id;
