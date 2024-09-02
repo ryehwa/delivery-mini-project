@@ -28,8 +28,6 @@ public class ProductService {
     private final StoreRepository storeRepository;
 
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        // 권한 체크
-
         Store store = storeRepository.findById(productRequestDto.getStoreId()).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
@@ -46,8 +44,6 @@ public class ProductService {
 
     @Transactional
     public ProductResponseDto updateProduct(UUID id, ProductRequestDto productRequestDto) {
-        //권한 체크
-
         //상품 존재 여부 확인
         Product product = findProductById(id);
         //update
@@ -92,8 +88,6 @@ public class ProductService {
 
     //논리적 삭제 -> 숨김 처리
     public void deleteProduct(UUID id) {
-        //권한 체크
-
         //상품 검색
         Product product = findProductById(id);
         //hidden 처리

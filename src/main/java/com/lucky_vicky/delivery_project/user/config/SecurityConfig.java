@@ -4,8 +4,10 @@ import com.lucky_vicky.delivery_project.user.security.CustomUserDetailsService;
 import com.lucky_vicky.delivery_project.user.security.JwtAuthenticationFilter;
 import com.lucky_vicky.delivery_project.user.security.JwtTokenProvider;
 import com.lucky_vicky.delivery_project.user.service.TokenBlacklistService;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -61,6 +65,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/categories/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/users/{userId}").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/api/v1/address/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers(POST,"api/v1/products").hasAnyRole("STORE","ADMIN")
+                        .requestMatchers(PUT, "/api/v1/products/{productId}").hasAnyRole("STORE", "ADMIN")
+                        .requestMatchers(DELETE, "/api/v1/products/{productId}").hasAnyRole("STORE", "ADMIN")
+                        .requestMatchers(GET, "/api/v1/products").permitAll()
+                        .requestMatchers(GET, "/api/v1/products/{productId}").permitAll()
+                        .requestMatchers("/api/v1/products/search").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
