@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @UseCase(value = "createStoreUseCase")
 public interface CreateStoreUseCase {
-    StoreUUIDResponseDto createStore(CreateStoreRequestDto createStoreRequestDto);
+    StoreUUIDResponseDto createStore(CreateStoreRequestDto createStoreRequestDto, UUID userId);
     StoreUUIDResponseDto acceptStore(UUID storeId);
 }

@@ -4,10 +4,12 @@ import com.lucky_vicky.delivery_project.global.annotation.UserId;
 import com.lucky_vicky.delivery_project.store.dto.CreateStoreRequestDto;
 import com.lucky_vicky.delivery_project.store.dto.UpdateStoreRequestDto;
 import com.lucky_vicky.delivery_project.store.usecase.*;
+import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -92,9 +94,11 @@ public class StoreController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('STORE')")
     @PostMapping("")
     public ResponseEntity<?> createStore(
-            @RequestBody CreateStoreRequestDto createStoreRequestDto
-    ) {
-        return ResponseEntity.ok(createStoreUseCase.createStore(createStoreRequestDto));
+            @RequestBody CreateStoreRequestDto createStoreRequestDto, @AuthenticationPrincipal UserPrincipal userPrincipal
+            ) {
+
+        UUID userId = userPrincipal.getId();
+        return ResponseEntity.ok(createStoreUseCase.createStore(createStoreRequestDto, userId));
     }
 
     /**

@@ -59,10 +59,11 @@ public class Store extends AuditingEntity {
 
     /* -------------- Constructor -------------- */
     @Builder
-    public Store(String name, String address, String number) {
+    public Store(String name, String address, String number, User user) {
         this.name = name;
         this.address = address;
         this.number = number;
+        this.user = user;
         this.isHidden = true;
     }
 
