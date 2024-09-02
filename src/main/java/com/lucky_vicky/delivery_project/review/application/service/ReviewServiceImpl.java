@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
      *
      * @param reviewRequestDTO
      */
+    @Transactional
     @Override
     public void createReview(ReviewRequestDTO reviewRequestDTO) {
 
@@ -81,6 +83,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param reviewUpdateDTO
      * @return
      */
+    @Transactional
     @Override
     public ReviewResponseDTO updateReview(ReviewUpdateDTO reviewUpdateDTO) {
 
@@ -100,6 +103,7 @@ public class ReviewServiceImpl implements ReviewService {
      *
      * @param reviewId
      */
+    @Transactional
     @Override
     public void deleteReview(UUID reviewId) {
 
