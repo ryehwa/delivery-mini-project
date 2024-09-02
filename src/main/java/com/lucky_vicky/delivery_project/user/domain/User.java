@@ -1,5 +1,6 @@
 package com.lucky_vicky.delivery_project.user.domain;
 
+import com.lucky_vicky.delivery_project.delivery.domain.Delivery;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;

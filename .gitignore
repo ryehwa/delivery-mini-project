@@ -234,8 +234,18 @@ $RECYCLE.BIN/
 # Application YAML files
 application-local.yml
 application-dev.yml
+application-jwt.yml
 
 # Bin
 bin/
+
+
+#### http
+/src/main/resources/http
+
+/HELP.md
+
+### .gitignore
+.gitignore
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,visualstudiocode,windows,macos
