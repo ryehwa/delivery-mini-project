@@ -22,7 +22,8 @@ public class OrderRequestDTO {
     private boolean isOnline;
 
     // 배송지
+    private boolean isDefault;
     private String address;
     private String recipientName;
-    private boolean isDefault;
+    private boolean defaultCheck;
 }
