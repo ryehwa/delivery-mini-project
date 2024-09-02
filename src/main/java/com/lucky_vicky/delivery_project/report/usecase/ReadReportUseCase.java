@@ -9,8 +9,8 @@ import java.util.UUID;
 
 @UseCase("readReportUseCase")
 public interface ReadReportUseCase {
-    ReportDetailResponseDto readReport(UUID userId);
-    Page<ReportSummaryResponseDto> readReports(UUID userId);
-    Page<ReportSummaryResponseDto> readAllReports(UUID userId, int page, int size, String orderBy, String sortBy);
-    Page<ReportSummaryResponseDto> searchReports(UUID userId, int page, int size, String text);
+    ReportDetailResponseDto readReport(UUID userId, UUID reportId);
+    Page<ReportSummaryResponseDto> readReports(UUID userId, int page, int size, String orderBy, String sortBy);
+    Page<ReportSummaryResponseDto> readAllReports(int page, int size, String orderBy, String sortBy);
+    Page<ReportSummaryResponseDto> searchReports(int page, int size, String text);
 }

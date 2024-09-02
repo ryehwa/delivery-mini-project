@@ -48,6 +48,9 @@ public class Report extends AuditingEntity {
     @Column(name = "status", nullable = false)
     private EReportStatus status;
 
+    @Column(name = "reply")
+    private String reply;
+
     /* -------------- Mapping -------------- */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -64,15 +67,23 @@ public class Report extends AuditingEntity {
         this.user = user;
         this.targetType = targetType;
         this.status = EReportStatus.PENDING;
+        this.reply = null;
     }
 
     /* -------------- Methods -------------- */
-    public void update(String title, String content) {
+    public void update(String title, String content, EReportTargetType targetType, UUID targetId) {
         this.title = title;
         this.content = content;
+        this.targetType = targetType;
+        this.targetId = targetId;
     }
 
     public void delete() {
         this.setIsDeleted(true);
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+        this.status = EReportStatus.EXECUTED;
     }
 }

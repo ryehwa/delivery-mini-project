@@ -20,7 +20,8 @@ public enum ExceptionCode {
     EMPTY_AUTHENTICATION(401, "인증 정보가 없습니다."),
     ACCESS_DENIED_ERROR(403, "접근 권한이 없습니다."),
     INVALID_CATEGORY_TYPE(400, "유효하지 않은 카테고리 타입입니다."),
-    DEFAULT_DELIVERY_NOT_FOUND(404, "기본 배송지가 설정되어 있지 않습니다.");
+    DEFAULT_DELIVERY_NOT_FOUND(404, "기본 배송지가 설정되어 있지 않습니다."),
+    REPORT_NOT_FOUND(404, "신고를 찾을 수 없습니다.");
 
 
     private int status;

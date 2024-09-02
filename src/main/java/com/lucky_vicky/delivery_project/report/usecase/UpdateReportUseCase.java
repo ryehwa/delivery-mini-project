@@ -7,5 +7,5 @@ import java.util.UUID;
 
 @UseCase("updateReportUseCase")
 public interface UpdateReportUseCase {
-    void updateReport(UUID userId, UpdateReportRequestDto updateReportRequestDto);
+    void updateReport(UUID userId, UUID reportId, UpdateReportRequestDto updateReportRequestDto);
 }
