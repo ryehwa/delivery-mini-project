@@ -1,9 +1,6 @@
 package com.lucky_vicky.delivery_project.review.application.service;
 
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewListDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,4 +22,7 @@ public interface ReviewService {
 
     // 가게 후기 목록 조회
     Page<ReviewListDTO> getReviewsByStore(UUID storeId, int page, int size, String sortBy, boolean orderBy);
+
+    // 가게 후기 신고
+    void reportReview(ReviewReportDTO reviewReportDTO);
 }
