@@ -23,7 +23,7 @@ public class ReadStoreListServiceImplV1 implements ReadStoreListUseCase {
         Sort.Direction direction = orderBy.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-        Page<Store> storePage = storeRepository.findAllByIsHiddeFalse(pageable);
+        Page<Store> storePage = storeRepository.findAllByIsHiddeFalseAndIsDeletedFalse(pageable);
 
         return storePage.map(StoreSummaryResponseDto::fromEntity);
     }
@@ -31,7 +31,7 @@ public class ReadStoreListServiceImplV1 implements ReadStoreListUseCase {
     @Override
     public Page<StoreSummaryResponseDto> searchStore(int page, int size, String text) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Store> storePage = storeRepository.findByIsHiddenFalseAndNameContaining(text, pageable);
+        Page<Store> storePage = storeRepository.findByIsHiddenFalseAndIsDeletedFalseAndNameContaining(text, pageable);
         return storePage.map(StoreSummaryResponseDto::fromEntity);
     }
 }

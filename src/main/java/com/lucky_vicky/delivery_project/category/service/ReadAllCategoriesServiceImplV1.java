@@ -19,7 +19,7 @@ public class ReadAllCategoriesServiceImplV1 implements ReadAllCategoriesUseCase 
 
     @Override
     public List<CategoryResponseDto> readAllStoreCategories() {
-        List<StoreCategory> storeCategoryList = storeCategoryRepository.findAll();
+        List<StoreCategory> storeCategoryList = storeCategoryRepository.findByIsDeletedFalse();
         List<CategoryResponseDto> categoryResponseDtoList = storeCategoryList.stream()
                 .map(storeCategory -> CategoryResponseDto.fromEntity(storeCategory))
                 .toList();
@@ -28,7 +28,7 @@ public class ReadAllCategoriesServiceImplV1 implements ReadAllCategoriesUseCase 
 
     @Override
     public List<CategoryResponseDto> readAllLocalCategories() {
-        List<LocalCategory> localCategoryList = localCategoryRepository.findAll();
+        List<LocalCategory> localCategoryList = localCategoryRepository.findByIsDeletedFalse();
         List<CategoryResponseDto> categoryResponseDtoList = localCategoryList.stream()
                 .map(localCategory -> CategoryResponseDto.fromEntity(localCategory))
                 .toList();

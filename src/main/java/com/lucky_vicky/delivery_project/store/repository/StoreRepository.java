@@ -15,12 +15,15 @@ import java.util.UUID;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, UUID> {
 
-    @Query("SELECT s FROM Store s WHERE s.isHidden = false")
-    Page<Store> findAllByIsHiddeFalse(Pageable pageable);
+    @Query("SELECT s FROM Store s WHERE s.isHidden = false AND s.isDeleted = false")
+    Page<Store> findAllByIsHiddeFalseAndIsDeletedFalse(Pageable pageable);
 
-    @Query("SELECT s FROM Store s WHERE s.isHidden = false AND (s.name LIKE %:text%)")
-    Page<Store> findByIsHiddenFalseAndNameContaining(@Param("text") String text, Pageable pageable);
+    @Query("SELECT s FROM Store s WHERE s.isHidden = false AND s.isDeleted = false AND (s.name LIKE %:text%)")
+    Page<Store> findByIsHiddenFalseAndIsDeletedFalseAndNameContaining(@Param("text") String text, Pageable pageable);
 
     @Query("SELECT s FROM Store s WHERE s.user = :user")
     Optional<Store> findByUser(User user);
+
+    @Query("SELECT s FROM Store s WHERE s.id = :id AND s.isDeleted = false")
+    Optional<Store> findByIdAnAndIsDeletedFalse(UUID id);
 }

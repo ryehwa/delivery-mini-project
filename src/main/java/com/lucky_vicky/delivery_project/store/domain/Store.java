@@ -77,4 +77,8 @@ public class Store extends AuditingEntity {
     public void updateStoreStatus() {
         this.isHidden = false;
     }
+
+    public void delete() {
+        this.setIsDeleted(true);
+    }
 }

@@ -25,7 +25,7 @@ public class DeleteStoreServiceImplV1 implements DeleteStoreUseCase {
     public void deleteStoreByAdmin(UUID storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-        storeRepository.delete(store);
+        store.delete();
     }
 
     @Override
@@ -35,6 +35,6 @@ public class DeleteStoreServiceImplV1 implements DeleteStoreUseCase {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         Store store = storeRepository.findByUser(user)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
-        storeRepository.delete(store);
+        store.delete();
     }
 }
