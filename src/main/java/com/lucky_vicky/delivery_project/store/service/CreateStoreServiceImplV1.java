@@ -3,6 +3,8 @@ package com.lucky_vicky.delivery_project.store.service;
 import com.lucky_vicky.delivery_project.category.domain.StoreCategory;
 import com.lucky_vicky.delivery_project.category.domain.StoreCategoryMapper;
 import com.lucky_vicky.delivery_project.category.repository.StoreCategoryRepository;
+import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
+import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.store.domain.Store;
 import com.lucky_vicky.delivery_project.store.dto.CreateStoreRequestDto;
 import com.lucky_vicky.delivery_project.store.dto.StoreUUIDResponseDto;
@@ -42,7 +44,7 @@ public class CreateStoreServiceImplV1 implements CreateStoreUseCase {
 
         for (UUID categoryId : categoryIds) {
             StoreCategory storeCategory = storeCategoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CATEGORY_NOT_FOUND));
             StoreCategoryMapper storeCategoryMapper = StoreCategoryMapper.builder()
                     .store(newStore)
                     .storeCategory(storeCategory)
@@ -60,7 +62,7 @@ public class CreateStoreServiceImplV1 implements CreateStoreUseCase {
     @Transactional
     public StoreUUIDResponseDto acceptStore(UUID storeId) {
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 가게입니다."));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
         store.updateStoreStatus();
         return StoreUUIDResponseDto.fromEntity(store);
     }

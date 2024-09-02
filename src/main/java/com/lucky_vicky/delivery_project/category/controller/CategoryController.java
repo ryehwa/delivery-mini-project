@@ -22,7 +22,6 @@ public class CategoryController {
 
     /**
      * 카테고리 생성
-     * 인증/인가 추가 해야함.
      * */
     @PostMapping("")
     public ResponseEntity<?> createCategory(
@@ -33,7 +32,6 @@ public class CategoryController {
 
     /**
      * 가게 카테고리 전체 조회
-     * 인증/인가 추가 해야함.
      * */
     @GetMapping("/store")
     public ResponseEntity<?> readAllStoreCategories() {
@@ -42,7 +40,6 @@ public class CategoryController {
 
     /**
      * 지역 카테고리 전체 조회
-     * 인증/인가 추가 해야함.
      * */
     @GetMapping("/local")
     public ResponseEntity<?> readAllLocalCategories() {
@@ -51,7 +48,6 @@ public class CategoryController {
 
     /**
      * 가게 카테고리 삭제
-     * 인증/인가 추가 해야함.
      * */
     @DeleteMapping("/store/{categoryId}")
     public ResponseEntity<?> deleteStoreCategory(
@@ -63,7 +59,6 @@ public class CategoryController {
 
     /**
      * 지역 카테고리 삭제
-     * 인증/인가 추가 해야함.
      * */
     @DeleteMapping("/local/{categoryId}")
     public ResponseEntity<?> deleteLocalCategory(

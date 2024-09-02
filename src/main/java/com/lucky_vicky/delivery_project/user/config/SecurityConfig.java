@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final JwtTokenProvider tokenProvider;
@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/users").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/categories/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/users/{userId}").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
