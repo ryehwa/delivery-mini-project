@@ -29,7 +29,7 @@ public class StoreController {
      * 가게 목록 조회
      * PUBLIC
      * */
-    @GetMapping("")
+    @GetMapping("/public")
     public ResponseEntity<?> readStoreList(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -43,7 +43,7 @@ public class StoreController {
      * 가게 검색
      * PUBLIC
      * */
-    @GetMapping("/search")
+    @GetMapping("/public/search")
     public ResponseEntity<?> searchStore(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -56,7 +56,7 @@ public class StoreController {
      * 가게 상세 조회
      * PUBLIC
      * */
-    @GetMapping("/{storeId}")
+    @GetMapping("/public/{storeId}")
     public ResponseEntity<?> readStoreDetail(
             @PathVariable UUID storeId
     ) {

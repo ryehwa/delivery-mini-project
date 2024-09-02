@@ -27,7 +27,7 @@ public class NoticeController {
      * 공지사항 목록 조회
      * PUBLIC
      */
-    @GetMapping("")
+    @GetMapping("/public")
     public ResponseEntity<?> readNoticeList(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -41,7 +41,7 @@ public class NoticeController {
      * 공지사항 상세 조회
      * PUBLIC
      */
-    @GetMapping("/{noticeId}")
+    @GetMapping("/public/{noticeId}")
     public ResponseEntity<?> readNoticeDetail(
             @PathVariable(value = "noticeId") UUID noticeId
     ) {
@@ -52,7 +52,7 @@ public class NoticeController {
      * 공지사항 검색
      * PUBLIC
      */
-    @GetMapping("/search")
+    @GetMapping("/public/search")
     public ResponseEntity<?> searchNotice(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
