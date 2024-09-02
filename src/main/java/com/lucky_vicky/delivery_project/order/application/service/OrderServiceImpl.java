@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -137,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
                     .build();
 
             // order에 orderDelivery 주입
-            order.getOrderDeliveryList().add(orderDelivery);
+            order.setOrderDeliveryList(Arrays.asList(orderDelivery));
 
         } else {
             // Delivery 객체 생성
@@ -157,7 +158,7 @@ public class OrderServiceImpl implements OrderService {
                     .build();
 
             // order에 orderDelivery 주입
-            order.getOrderDeliveryList().add(orderDelivery);
+            order.setOrderDeliveryList(Arrays.asList(orderDelivery));
         }
 
         orderRepository.save(order);
