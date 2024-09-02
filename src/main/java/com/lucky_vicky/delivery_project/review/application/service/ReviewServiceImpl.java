@@ -141,6 +141,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param reviewReportDTO
      */
     @Override
+    @Transactional
     public void reportReview(ReviewReportDTO reviewReportDTO) {
 
         Review review = reviewRepository.findById(reviewReportDTO.getReviewId()).orElseThrow(
