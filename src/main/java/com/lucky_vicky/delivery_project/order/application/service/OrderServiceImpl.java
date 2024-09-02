@@ -123,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
         // 기본 배송지 설정 default true 일 때
         if (orderRequestDTO.isDefault()) {
             // 사용자 ID와 기본 배송지 여부를 기반으로 배송지 조회
-            Delivery delivery = deliveryRepository.findByUserIdAndDefault(
+            Delivery delivery = deliveryRepository.findByUserIdAndIsDefault(
                     orderRequestDTO.getUserId(), true);
 
             if (delivery == null) {
