@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class ReviewController {
 
     // 가게 후기 작성
     @PostMapping("/{storeId}/reviews")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<String> createReview(@PathVariable("storeId") UUID storeId, @AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ReviewRequestDTO reviewRequestDTO) {
 
         log.info("Review Controller | POST Create Review");
@@ -41,6 +43,7 @@ public class ReviewController {
 
     // 가게 후기 조회
     @GetMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('USER') or hasRole('STORE') or hasRole('ADMIN')")
     public ResponseEntity<ReviewResponseDTO> findReviewById(@PathVariable("reviewId") UUID reviewId) {
 
         log.info("Review Controller | GET Find Review ById");
@@ -52,6 +55,7 @@ public class ReviewController {
 
     // 가게 후기 수정
     @PutMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable UUID reviewId, @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
 
         log.info("Review Controller | PUT Update Review");
@@ -64,6 +68,7 @@ public class ReviewController {
 
     // 가게 후기 삭제
     @DeleteMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<String> deleteReview(@PathVariable UUID reviewId) {
 
         log.info("Review Controller | DELETE Delete Review");
@@ -75,6 +80,7 @@ public class ReviewController {
 
     // 가게 후기 목록 조회
     @GetMapping("/{storeId}/reviews")
+    @PreAuthorize("hasRole('USER') or hasRole('STORE') or hasRole('ADMIN')")
     public Page<ReviewListDTO> getReviewsByStore(@PathVariable UUID storeId,
                                                  @RequestParam(value = "page", defaultValue = "1") int page,
                                                  @RequestParam(value = "size", defaultValue = "10") int size,
