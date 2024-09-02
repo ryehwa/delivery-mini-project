@@ -4,10 +4,7 @@ import com.lucky_vicky.delivery_project.global.exception.BusinessLogicException;
 import com.lucky_vicky.delivery_project.global.exception.ExceptionCode;
 import com.lucky_vicky.delivery_project.order.domain.entity.Order;
 import com.lucky_vicky.delivery_project.order.domain.repository.OrderRepository;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewListDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.*;
 import com.lucky_vicky.delivery_project.review.domain.entity.Review;
 import com.lucky_vicky.delivery_project.review.domain.repository.ReviewRepository;
 import com.lucky_vicky.delivery_project.store.domain.Store;
@@ -137,5 +134,22 @@ public class ReviewServiceImpl implements ReviewService {
         Page<Review> reviewPage = reviewRepository.findAllByStoreIdAndIsDeletedFalse(storeId, pageable);
 
         return reviewPage.map(ReviewListDTO::toDTO);
+    }
+
+    /**
+     * 가게 후기 신고
+     * @param reviewReportDTO
+     */
+    @Override
+    @Transactional
+    public void reportReview(ReviewReportDTO reviewReportDTO) {
+
+        Review review = reviewRepository.findById(reviewReportDTO.getReviewId()).orElseThrow(
+                ()-> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        review.setReport(reviewReportDTO.getReport());
+        review.setReportFlag(true);
+
+        reviewRepository.save(review);
     }
 }

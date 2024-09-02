@@ -1,13 +1,9 @@
 package com.lucky_vicky.delivery_project.delivery.domain;
 
 import com.lucky_vicky.delivery_project.delivery.dto.DeliveryRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.lucky_vicky.delivery_project.user.domain.User;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -15,6 +11,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "p_delivery")
 public class Delivery {
 
@@ -24,6 +22,10 @@ public class Delivery {
     private String recipientName;
     private boolean isDefault;
     private boolean isDeleted;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     //UUID 자동생성
     @PrePersist

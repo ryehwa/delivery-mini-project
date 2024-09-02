@@ -1,9 +1,6 @@
 package com.lucky_vicky.delivery_project.review.controller;
 
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewListDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewRequestDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewResponseDTO;
-import com.lucky_vicky.delivery_project.review.application.dto.ReviewUpdateDTO;
+import com.lucky_vicky.delivery_project.review.application.dto.*;
 import com.lucky_vicky.delivery_project.review.application.service.ReviewService;
 import com.lucky_vicky.delivery_project.user.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -90,5 +87,18 @@ public class ReviewController {
         log.info("Review Controller | GET getReviews By Store");
 
         return reviewService.getReviewsByStore(storeId, page-1, size, sortBy, orderBy);
+    }
+
+    // 가게 후기 신고
+    @PostMapping("/reviews/report/{reviewId}")
+    @PreAuthorize("hasRole('USER') or hasRole('STORE') or hasRole('ADMIN')")
+    public ResponseEntity<String> reportReview(@PathVariable UUID reviewId, @RequestBody ReviewReportDTO reviewReportDTO){
+
+        log.info("Review Controller | POST Report Review");
+
+        reviewReportDTO.setReviewId(reviewId);
+        reviewService.reportReview(reviewReportDTO);
+
+        return ResponseEntity.ok("후기 신고가 성공적으로 되었습니다.");
     }
 }
