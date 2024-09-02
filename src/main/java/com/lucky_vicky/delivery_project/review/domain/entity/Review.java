@@ -38,7 +38,7 @@ public class Review extends AuditingEntity {
     private String report;
 
     @Column(name = "is_report")
-    private boolean isReport = false;
+    private boolean reportFlag = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
