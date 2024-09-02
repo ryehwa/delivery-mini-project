@@ -22,13 +22,15 @@ public class DeleteCategoryServiceImplV1 implements DeleteCategoryUseCase {
     public void deleteStoreCategory(UUID uuid) {
         StoreCategory storeCategory = storeCategoryRepository.findById(uuid)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CATEGORY_NOT_FOUND));
-        storeCategoryRepository.delete(storeCategory);
+        storeCategory.delete();
+        // storeCategoryRepository.delete(storeCategory);
     }
 
     @Override
     public void deleteLocalCategory(UUID uuid) {
         LocalCategory localCategory = localCategoryRepository.findById(uuid)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CATEGORY_NOT_FOUND));
-        localCategoryRepository.delete(localCategory);
+        localCategory.delete();
+        // localCategoryRepository.delete(localCategory);
     }
 }

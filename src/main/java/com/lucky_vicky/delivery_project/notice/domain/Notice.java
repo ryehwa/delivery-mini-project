@@ -1,7 +1,7 @@
-package com.lucky_vicky.delivery_project.category.domain;
+package com.lucky_vicky.delivery_project.notice.domain;
 
 import com.lucky_vicky.delivery_project.global.audit.AuditingEntity;
-import com.lucky_vicky.delivery_project.store.domain.Store;
+import com.lucky_vicky.delivery_project.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,16 +10,15 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "p_local_category")
-public class LocalCategory extends AuditingEntity {
+@Table(name = "p_notice")
+public class Notice extends AuditingEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -29,21 +28,31 @@ public class LocalCategory extends AuditingEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 
     /* -------------- Mapping -------------- */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store")
-    private List<Store> storeList = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     /* -------------- Constructor -------------- */
     @Builder
-    public LocalCategory(String name) {
-        this.name = name;
+    public Notice(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
     }
 
     /* -------------- Methods -------------- */
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public void delete() {
         this.setIsDeleted(true);
     }

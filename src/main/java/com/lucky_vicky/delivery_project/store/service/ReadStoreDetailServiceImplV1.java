@@ -19,7 +19,7 @@ public class ReadStoreDetailServiceImplV1 implements ReadStoreDetailUseCase {
 
     @Override
     public StoreDetailResponseDto readStoreDetail(UUID storeId) {
-        Store store = storeRepository.findById(storeId)
+        Store store = storeRepository.findByIdAnAndIsDeletedFalse(storeId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.STORE_NOT_FOUND));
 
         return StoreDetailResponseDto.fromEntity(store);
