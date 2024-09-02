@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface PaymentService {
 
     // findAllByUserId - getPaymentList
-    Page<PaymentListDTO> getPaymentList(UUID userId, int page, int size, String sortBy, boolean desc);
+    Page<PaymentListDTO> getPaymentList(UUID userId, int page, int size, String sortBy, boolean orderBy);
 
     // Create Payment
     PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO);
