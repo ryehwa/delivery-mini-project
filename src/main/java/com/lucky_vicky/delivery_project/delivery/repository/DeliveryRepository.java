@@ -8,5 +8,5 @@ import java.util.UUID;
 public interface DeliveryRepository extends JpaRepository<Delivery, UUID> {
     boolean existsByAddress(String address);
 
-    Delivery findByUserIdAndDefault(UUID userId, boolean isDefault);
+    Delivery findByUserIdAndIsDefault(UUID userId, boolean isDefault);
 }
