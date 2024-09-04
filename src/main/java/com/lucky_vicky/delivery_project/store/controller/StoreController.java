@@ -40,6 +40,26 @@ public class StoreController {
     }
 
     /**
+     * 
+     * 가게 목록 조회 + 평균 평점 계산
+     * 
+     * @param page 
+     * @param size
+     * @param sortBy
+     * @param orderBy
+     * @return
+     */
+    @GetMapping("/public/rate")
+    public ResponseEntity<?> getStoresWithAverageRate(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC") String orderBy
+    ) {
+        return ResponseEntity.ok(readStoreListUseCase.getStoresWithAverageRate(page, size, sortBy, orderBy));
+    }
+
+    /**
      * 가게 검색
      * PUBLIC
      * */

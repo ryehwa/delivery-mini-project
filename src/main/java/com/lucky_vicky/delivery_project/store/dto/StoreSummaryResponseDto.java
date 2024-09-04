@@ -10,7 +10,8 @@ import java.util.UUID;
 public record StoreSummaryResponseDto(
         UUID storeId,
         String name,
-        List<String> categories // 카테고리 이름
+        List<String> categories, // 카테고리 이름
+        Double averageRate // 평균 평점
 ) {
     public static StoreSummaryResponseDto fromEntity(Store store) {
         return StoreSummaryResponseDto.builder()

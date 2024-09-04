@@ -34,4 +34,25 @@ public class ReadStoreListServiceImplV1 implements ReadStoreListUseCase {
         Page<Store> storePage = storeRepository.findByIsHiddenFalseAndIsDeletedFalseAndNameContaining(text, pageable);
         return storePage.map(StoreSummaryResponseDto::fromEntity);
     }
+
+    @Override
+    public Page<StoreSummaryResponseDto> getStoresWithAverageRate(int page, int size, String sortBy, String orderBy) {
+
+        Sort.Direction direction = orderBy.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Object[]> storePage = storeRepository.findStoresWithAverageRate(pageable);
+        return storePage.map(objects -> {
+            Store store = (Store) objects[0];
+            Double averageRate = (Double) objects[1];
+            return StoreSummaryResponseDto.builder()
+                    .storeId(store.getId())
+                    .name(store.getName())
+                    .categories(store.getStoreCategoryMappers().stream()
+                            .map(storeCategoryMapper -> storeCategoryMapper.getStoreCategory().getName())
+                            .toList())
+                    .averageRate(averageRate) // 평균 평점 추가
+                    .build();
+        });
+    }
 }
