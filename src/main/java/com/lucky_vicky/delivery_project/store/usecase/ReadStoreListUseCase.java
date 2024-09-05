@@ -8,4 +8,7 @@ import org.springframework.data.domain.Page;
 public interface ReadStoreListUseCase {
     Page<StoreSummaryResponseDto> readStoreList(int page, int size, String sortBy, String orderBy);
     Page<StoreSummaryResponseDto> searchStore(int page, int size, String text);
+
+    // 평점 추가된 리스트
+    Page<StoreSummaryResponseDto> getStoresWithAverageRate(int page, int size, String sortBy, String orderBy);
 }
